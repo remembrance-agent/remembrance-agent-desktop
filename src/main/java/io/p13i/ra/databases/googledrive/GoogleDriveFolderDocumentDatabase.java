@@ -1,7 +1,6 @@
 package io.p13i.ra.databases.googledrive;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.HttpResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
@@ -11,12 +10,10 @@ import io.p13i.ra.databases.IDocumentDatabase;
 import io.p13i.ra.databases.cache.ICachableDocument;
 import io.p13i.ra.databases.cache.ICachableDocumentDatabase;
 import io.p13i.ra.utils.GoogleAPIUtils;
-import io.p13i.ra.utils.ListUtils;
 import io.p13i.ra.utils.LoggerUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;

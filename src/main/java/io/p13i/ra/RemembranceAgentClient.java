@@ -1,7 +1,6 @@
 package io.p13i.ra;
 
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Logger;
@@ -17,7 +16,10 @@ import io.p13i.ra.gui.GUI;
 import io.p13i.ra.gui.User;
 import io.p13i.ra.input.AbstractInputMechanism;
 import io.p13i.ra.input.KeyboardInputMechanism;
-import io.p13i.ra.models.*;
+import io.p13i.ra.models.AbstractDocument;
+import io.p13i.ra.models.Context;
+import io.p13i.ra.models.Query;
+import io.p13i.ra.models.ScoredDocument;
 import io.p13i.ra.utils.BufferingLogFileWriter;
 import io.p13i.ra.utils.DateUtils;
 import io.p13i.ra.utils.KeyboardLoggerBreakingBuffer;
