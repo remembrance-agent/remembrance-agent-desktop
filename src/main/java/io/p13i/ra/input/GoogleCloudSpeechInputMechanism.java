@@ -166,6 +166,7 @@ public class GoogleCloudSpeechInputMechanism extends AbstractInputMechanism impl
 
     @Override
     public void onComplete() {
+        // Callback characters from the speech recognizer
         for (StreamingRecognizeResponse response : this.responses) {
             List<StreamingRecognitionResult> resultsList = response.getResultsList();
             for (StreamingRecognitionResult streamingRecognitionResult : resultsList) {
