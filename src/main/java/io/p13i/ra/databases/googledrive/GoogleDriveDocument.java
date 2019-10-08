@@ -1,6 +1,5 @@
 package io.p13i.ra.databases.googledrive;
 
-import io.p13i.ra.databases.cache.ICachableDocument;
 import io.p13i.ra.models.Context;
 import io.p13i.ra.models.AbstractDocument;
 
@@ -10,7 +9,7 @@ import java.util.Objects;
 /**
  *
  */
-class GoogleDriveDocument extends AbstractDocument implements ICachableDocument {
+class GoogleDriveDocument extends AbstractDocument {
     private Date mLastModified;
 
     public GoogleDriveDocument(String id, String content, String filename, Date lastModified) {

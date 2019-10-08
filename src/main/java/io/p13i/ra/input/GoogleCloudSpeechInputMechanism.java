@@ -25,7 +25,10 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 import java.util.logging.Logger;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 
 /**
@@ -163,15 +166,20 @@ public class GoogleCloudSpeechInputMechanism extends AbstractInputMechanism impl
 
     @Override
     public void onComplete() {
-        this.responses.stream()
-                .map(StreamingRecognizeResponse::getResultsList)
-                .flatMap(List::stream)
-                .map(StreamingRecognitionResult::getAlternativesList)
-                .flatMap(List::stream)
-                .map(SpeechRecognitionAlternative::getTranscript)
-                .flatMap(StringUtils::toCharStream)
-                .map(CharacterUtils::toUpperCase)
-                .forEach(c -> inputMechanismEventsListenerCallback.onInput(this, c));
+        for (StreamingRecognizeResponse response : this.responses) {
+            List<StreamingRecognitionResult> resultsList = response.getResultsList();
+            for (StreamingRecognitionResult streamingRecognitionResult : resultsList) {
+                List<SpeechRecognitionAlternative> alternativesList = streamingRecognitionResult.getAlternativesList();
+                for (SpeechRecognitionAlternative speechRecognitionAlternative : alternativesList) {
+                    String transcript = speechRecognitionAlternative.getTranscript();
+                    for (int i = 0; i < transcript.length(); i++) {
+                        Character character = transcript.charAt(i);
+                        Character toUpperCase = CharacterUtils.toUpperCase(character);
+                        inputMechanismEventsListenerCallback.onInput(this, toUpperCase);
+                    }
+                }
+            }
+        }
     }
 
     @Override

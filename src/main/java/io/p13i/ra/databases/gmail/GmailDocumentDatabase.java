@@ -7,8 +7,7 @@ import com.google.api.services.gmail.GmailScopes;
 import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
-import io.p13i.ra.databases.IDocumentDatabase;
-import io.p13i.ra.databases.cache.ICachableDocumentDatabase;
+import io.p13i.ra.databases.AbstractDocumentDatabase;
 import io.p13i.ra.utils.GoogleAPIUtils;
 import io.p13i.ra.utils.LoggerUtils;
 
@@ -28,7 +27,7 @@ import static io.p13i.ra.RemembranceAgentClient.APPLICATION_NAME;
  * Enables use of Gmail as a document database.
  * Only email with the label "RA" (or equivalently "ra") are indexed.
  */
-public class GmailDocumentDatabase implements IDocumentDatabase<GmailDocument>, ICachableDocumentDatabase {
+public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocument> {
 
     private static final Logger LOGGER = LoggerUtils.getLogger(GmailDocumentDatabase.class);
 

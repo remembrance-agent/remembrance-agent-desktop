@@ -352,7 +352,7 @@ public class GUI {
             setPreferredSize(new Dimension(GUI.SCORE_WIDTH, GUI.SUGGESTION_HEIGHT));
         }});
         mSuggestionsPanel.add(new JButton() {{
-            setText(doc.toShortString());
+            setText(doc.toShortString(35, 3));
             setBounds(
                     /* x: */ GUI.SUGGESTION_PADDING_LEFT + GUI.SCORE_WIDTH,
                     /* y: */ GUI.PADDING_TOP + GUI.SUGGESTION_PANEL_PADDING_TOP + i * (GUI.SUGGESTION_HEIGHT + SUGGESTION_PADDING),
