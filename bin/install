@@ -25,4 +25,9 @@ sudo chmod +x ${EXECUTABLE}
 echo ">>> COPYING PLIST TO INSTALL DIRECTORY"
 cp ${PLIST} ${INSTALL_DIR}
 
+
 echo ">>> INSTALLED"
+echo "alias ra=\"VERSION=\"2.0.0\" ra --home \$HOME\"" >> ~/.bashrc
+echo ">>> ALIAS CREATED IN ~/.bashrc"
+echo ">>> SOURCE ~/.bashrc AND INVOKE ALIAS BY RUNNING \"ra\""
+echo ">>> IN YOUR COMMAND LINE"

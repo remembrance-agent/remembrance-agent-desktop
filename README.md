@@ -12,6 +12,15 @@ This package uses the [`remembrance-agent` engine package](https://github.com/re
 
 ![Logo](./docs/img/logo.png)
 
+## Installation Requirements
+
+### Debian-Based Systems (Ubuntu)
+
+System Packages:
+
+- openjdk-8-jdk
+
+
 ## Commands
 
 ### Building
@@ -27,8 +36,15 @@ sudo VERSION="2.0.0" bash ./bin/install
 ```
 
 Now you can run the following from anywhere:
+
 ```bash
 VERSION="2.0.0" ra --home $HOME
+```
+
+or with the alias that was added into your .bashrc file:
+
+```bash
+ra
 ```
 
 ### Running (cross platform)
