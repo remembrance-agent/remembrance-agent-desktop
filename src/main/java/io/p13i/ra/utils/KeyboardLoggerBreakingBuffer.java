@@ -9,7 +9,7 @@ import java.util.Date;
  */
 public class KeyboardLoggerBreakingBuffer {
     private static final long BREAKING_BUFFER_DURATION_SEC = 2;  // seconds
-    private static final char DEFAULT_BREAKER_CHARACTER = '␣';
+    private static final char DEFAULT_BREAKER_CHARACTER = '_';
     private final LimitedCapacityBuffer<TimestampedCharacter> limitedCapacityBuffer;
 
     public KeyboardLoggerBreakingBuffer(int maximumCapacity) {
@@ -23,10 +23,10 @@ public class KeyboardLoggerBreakingBuffer {
      */
     public void addCharacter(char c) {
 
-        if (c == '⌫') {
-            limitedCapacityBuffer.removeLast();
-            return;
-        }
+        // if (c == '') {
+        //     limitedCapacityBuffer.removeLast();
+        //     return;
+        // }
 
         if (!isCharacterAllowedIntoBuffer(c)) {
             return;

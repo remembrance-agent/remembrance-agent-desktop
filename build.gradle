@@ -16,8 +16,15 @@ jar {
     }
 }
 
+
+String envVersion = System.getenv('VERSION')
+
+if (envVersion == null) {
+    throw new RuntimeException();
+}
+
 group 'io.p13i'
-version "v" + System.getenv('VERSION')
+version "v" + envVersion
 
 targetCompatibility = 1.8
 sourceCompatibility = 1.8

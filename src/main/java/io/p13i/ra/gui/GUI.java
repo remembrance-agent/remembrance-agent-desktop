@@ -76,6 +76,11 @@ public class GUI {
             add(Box.createHorizontalGlue());
             setJMenuBar(new JMenuBar() {{
                 add(new JMenu("RA Settings") {{
+                    add(new JMenuItem("Pause input and search") {{
+                        addActionListener(e -> {
+                            JOptionPane.showMessageDialog(mJFrame, "Under construction...");
+                        });
+                    }});
                     add(new JMenuItem("Reinitialize remembrance agent") {{
                         addActionListener(e -> {
                             RemembranceAgentClient.getInstance().initializeRAEngine(true);
@@ -265,8 +270,16 @@ public class GUI {
                                     @Override
                                     public Boolean doInBackground() {
 
-                                        String url = GoogleChrome.getURLofActiveTab();
-                                        String title = GoogleChrome.getTitleOfActiveTab();
+                                        String url, title;
+
+                                        try {
+                                            url = GoogleChrome.getURLofActiveTab();
+                                            title = GoogleChrome.getTitleOfActiveTab();
+                                        } catch (UnsupportedOperationException ex) {
+                                            ex.printStackTrace();
+                                            JOptionPane.showMessageDialog(mJFrame, ex.toString(), ex.toString(), JOptionPane.ERROR_MESSAGE);
+                                            return false;
+                                        }
 
                                         url = JOptionPane.showInputDialog(mJFrame, "Index web page with Remembrance Agent:", url);
                                         if (url == null || url.length() == 0) {
