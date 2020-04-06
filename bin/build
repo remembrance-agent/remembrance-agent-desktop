@@ -1,0 +1,17 @@
+#!/bin/sh
+set -e -o pipefail
+
+# Source: https://superuser.com/questions/912955/how-to-make-a-java-jar-file-to-be-a-single-file-executable
+
+JAR_PATH="./build/libs/remembrance-agent-v$VERSION-all.jar"
+STUB_PATH="./bin/_stub"
+RA_PATH="./bin/ra"
+
+echo ">>> BUILDING WITH GRADLE"
+./gradlew build --stacktrace
+
+echo ">>> BUILDING ra FILE"
+cat $STUB_PATH $JAR_PATH > $RA_PATH
+chmod +x $RA_PATH
+
+echo ">>> DONE"

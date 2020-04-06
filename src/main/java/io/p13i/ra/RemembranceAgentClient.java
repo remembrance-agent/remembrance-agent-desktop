@@ -194,6 +194,7 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
      * @return the created engine
      */
     public RemembranceAgentEngine initializeRAEngine(boolean useCache) {
+        LOGGER.info("initializeRAEngine(boolean)");
 
         // Clear the timer
         if (mRAUpdateTimer != null) {
@@ -202,16 +203,22 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
             mRAUpdateTimer = null;
         }
 
+        LOGGER.info("Cleared update timer");
+
         // Use the RA cache directory
         mLocalDiskCacheDatabase =
                 new LocalDiskCacheDocumentDatabase(User.Home.Documents.RA.Cache.getDirectory());
 
         // Load all the documents into memory and then into the disk
         if (!useCache) {
+            LOGGER.info("Not using cache");
+
             // Load files from the local documents directory
             mLocalDiskCacheDatabase.addDocumentsToMemory(new LocalDiskDocumentDatabase(User.Preferences.getString(LocalDiskDocumentsFolderPath)) {{
                 loadDocuments();
             }});
+
+            LOGGER.info("Loaded documents from local disk");
 
             // Load files from Google Drive
             String googleDriveFolderIDs = User.Preferences.getString(GoogleDriveFolderIDs);
@@ -231,11 +238,15 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
                 loadDocuments();
             }});
 
+            LOGGER.info("Adding documents to disk cache");
+
             // Save these files to disk
             mLocalDiskCacheDatabase.saveDocumentsInMemoryToDisk();
 
             // Reload the new documents from disk
             mLocalDiskCacheDatabase.loadDocuments();
+
+            LOGGER.info("Loading documents from disk");
         }
 
         // Update the GUI with where the suggestions are coming from

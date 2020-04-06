@@ -20,7 +20,7 @@ jar {
 String envVersion = System.getenv('VERSION')
 
 if (envVersion == null) {
-    throw new RuntimeException();
+    throw new RuntimeException("Version not found " + envVersion);
 }
 
 group 'io.p13i'
