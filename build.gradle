@@ -18,9 +18,10 @@ jar {
 
 
 String envVersion = System.getenv('VERSION')
+envVersion = envVersion != null ? envVersion : "2.0.0"
 
 if (envVersion == null) {
-    throw new RuntimeException("Version not found " + envVersion);
+    throw new RuntimeException("Version not found. Found " + envVersion);
 }
 
 group 'io.p13i'
@@ -47,7 +48,7 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
     
-    compile 'com.github.remembrance-agent:remembrance-agent:5c32f2b6dd'
+    compile 'com.github.remembrance-agent:remembrance-agent:p13i~change-input-callback-SNAPSHOT'
 
     // Google Drive API
     compile 'com.google.api-client:google-api-client:1.23.0'

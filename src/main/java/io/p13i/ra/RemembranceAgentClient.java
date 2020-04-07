@@ -332,12 +332,12 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
     }
 
     @Override
-    public void onInput(AbstractInputMechanism inputMechanism, Character c) {
+    public void onInput(AbstractInputMechanism inputMechanism, String str) {
         // Write the timestamp and character to the keylogger log file
-        mKeyLoggerBufferLogFileWriter.queue(DateUtils.longTimestamp() + " " + c + "\n");
+        mKeyLoggerBufferLogFileWriter.queue(DateUtils.longTimestamp() + " " + str + "\n");
 
         // Add to the buffer
-        mInputBuffer.addCharacter(c);
+        mInputBuffer.addString(str);
 
         // Display on the GUI
         mGUI.setKeystrokesBufferText(mInputBuffer.toString());

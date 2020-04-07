@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -101,7 +102,30 @@ public class GUI {
                                     // Update GUI
                                     JOptionPane.showMessageDialog(mJFrame, "Reloading with new cache! GUI will be disabled");
                                     mJFrame.setEnabled(false);
-                                    setSuggestionsPanelTitle("Loading caches...");
+                                    setSuggestionsPanelTitle("Loading caches");
+
+                                    Timer updateTimer = new Timer(1000, new ActionListener() {
+                                        private static final int MAX_PERIOD_COUNT = 3;
+                                        private int mPeriodCount = 0;
+
+                                        private String getPanelTitle() {
+                                            StringBuilder stringBuilder = new StringBuilder();
+                                            stringBuilder.append("Loading caches");
+                                            for (int i = 1; i <= mPeriodCount; i++) {
+                                                stringBuilder.append(".");
+                                            }
+                                            return stringBuilder.toString();
+                                        }
+
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            mPeriodCount = (mPeriodCount + 1) % (MAX_PERIOD_COUNT + 1);
+                                            setSuggestionsPanelTitle(getPanelTitle());
+                                        }
+                                    }) {{
+                                        setRepeats(true);
+                                        start();
+                                    }};
 
                                     // Re-init
                                     try {
@@ -117,6 +141,7 @@ public class GUI {
                                         // Task failed -> false
                                         reloadSuccesful = false;
                                     } finally {
+                                        updateTimer.stop();
                                         JOptionPane.showMessageDialog(mJFrame, reloadSuccesful ? "Reinitialized with new cache!" : "Reload failed :(");
                                         mJFrame.setEnabled(true);
                                     }

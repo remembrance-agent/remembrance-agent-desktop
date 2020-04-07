@@ -1,5 +1,7 @@
 package io.p13i.ra.utils;
 
+import io.p13i.ra.input.SpecialCharacters;
+
 import java.util.Date;
 
 /**
@@ -14,6 +16,26 @@ public class KeyboardLoggerBreakingBuffer {
 
     public KeyboardLoggerBreakingBuffer(int maximumCapacity) {
         this.limitedCapacityBuffer = new LimitedCapacityBuffer<>(maximumCapacity);
+    }
+
+    /**
+     * Adds each character of the given string to the buffer
+     * @param str the string to add
+     */
+    public void addString(String str) {
+        if (str.equals(SpecialCharacters.BACKSPACE)) {
+            limitedCapacityBuffer.removeLast();
+            return;
+        }
+
+        if (str.equals(SpecialCharacters.SPACE)) {
+            addCharacter(' ');
+            return;
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            addCharacter(str.charAt(i));
+        }
     }
 
     /**

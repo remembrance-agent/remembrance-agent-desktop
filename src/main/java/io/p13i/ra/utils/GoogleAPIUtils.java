@@ -10,11 +10,9 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.FileDataStoreFactory;
 import io.p13i.ra.databases.googledrive.GoogleDriveFolderDocumentDatabase;
+import io.p13i.ra.gui.User;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.List;
 
 
@@ -31,7 +29,9 @@ public class GoogleAPIUtils {
     /**
      * Where the credentials file is relative to the resources directory
      */
-    private static final String CREDENTIALS_FILE_PATH = "/credentials.json";
+    private static String getCredentialsPath() {
+        return User.Home.Documents.RA.getDirectory() + File.separator + "credentials.json";
+    }
 
     /**
      * Creates an authorized Credential object.
@@ -41,11 +41,10 @@ public class GoogleAPIUtils {
      * @throws IOException If the credentials.json file cannot be found.
      */
     public static Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT, List<String> scopes, String tokensDirectoryPath) throws IOException {
+        String credentialsPath = getCredentialsPath();
+
         // Load client secrets.
-        InputStream in = GoogleDriveFolderDocumentDatabase.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
-        if (in == null) {
-            throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
-        }
+        InputStream in = new FileInputStream(credentialsPath);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
         // Build flow and trigger user authorization request.

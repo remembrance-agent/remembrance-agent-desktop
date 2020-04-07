@@ -47,9 +47,22 @@ public class KeyboardInputMechanism extends AbstractInputMechanism implements Na
 
     @Override
     public void nativeKeyPressed(NativeKeyEvent nativeKeyEvent) {
-        String keyText = NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode());
-        char characterToAdd = keyText.charAt(0);
-        this.inputMechanismEventsListenerCallback.onInput(this, characterToAdd);
+
+        String callbackValue;
+
+        switch (nativeKeyEvent.getKeyCode()) {
+            case NativeKeyEvent.VC_BACKSPACE:
+                callbackValue = SpecialCharacters.BACKSPACE;
+                break;
+            case NativeKeyEvent.VC_SPACE:
+                callbackValue = SpecialCharacters.SPACE;
+                break;
+            default:
+                callbackValue = NativeKeyEvent.getKeyText(nativeKeyEvent.getKeyCode());
+                break;
+        }
+
+        this.inputMechanismEventsListenerCallback.onInput(this, callbackValue);
     }
 
     @Override
