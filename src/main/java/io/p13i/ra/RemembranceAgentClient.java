@@ -342,4 +342,13 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
         // Display on the GUI
         mGUI.setKeystrokesBufferText(mInputBuffer.toString());
     }
+
+    /**
+     * Gets the current input mechanism
+     *
+     * @return the current input mechanism
+     */
+    public AbstractInputMechanism getCurrentInputMechanism() {
+        return mCurrentInputMechanism;
+    }
 }

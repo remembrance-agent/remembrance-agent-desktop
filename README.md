@@ -55,6 +55,14 @@ Adapt the file `./bin/ra` for your platform.
 
 Increment the version numbers in this README.
 
+## OS-specific setup instructions
+
+### Windows
+
+To make use of the "Save text of active Chrome tab" feature on Windows, you'll need to install Python and the pip package `pywinauto`.
+
+You will also need `bash` installed and available on your `PATH`.
+
 ---
 
 Pramod Kotipalli  
