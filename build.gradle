@@ -97,6 +97,8 @@ task distribute(type: Exec, dependsOn: [assemble, copyDependencies]) {
 
     def paramEmbeddedJRE = embeddedJRE ? [] : ['-Bruntime=']
 
+    def name = 'Remembrance Agent v' + envVersion
+
     workingDir project.projectDir
     commandLine = [
             'javapackager',
@@ -105,7 +107,8 @@ task distribute(type: Exec, dependsOn: [assemble, copyDependencies]) {
             '-native', nativeType,
             '-outdir', "${buildDir}/dist",
             '-outfile', project.name,
-            '-name', 'Remembrance Agent',
+            '-name', name,
+            '-title', name,
             '-appclass', mainClassName,
             '-srcdir', libsDir,
             '-srcfiles', jar.archiveName,
