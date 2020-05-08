@@ -16,4 +16,4 @@ jobs:
     - name: Bash for GitHub Actions
       uses: jcblw/bash@1.0.0
       with:
-        args: VERSION=2.0.0 ./bin/build
+        args: sudo VERSION=2.0.0 ./bin/build
