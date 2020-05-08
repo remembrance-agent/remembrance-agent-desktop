@@ -23,4 +23,4 @@ jobs:
         architecture: x64
 
     - name: Build
-      run: sudo VERSION=2.0.0 ./gradlew distribute --stacktrace
+      run: sudo JAVA_HOME=$(dirname $(dirname $(which javac))) VERSION=2.0.0 ./gradlew jpackage --stacktrace

@@ -30,8 +30,8 @@ if (envVersion == null) {
 group 'io.p13i'
 version "v" + envVersion
 
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
+targetCompatibility = 14
+sourceCompatibility = 14
 
 repositories {
     mavenCentral()
@@ -80,38 +80,15 @@ task copyDependencies(type: Copy) {
     from configurations.runtime
 }
 
-task distribute(type: Exec, dependsOn: [assemble, copyDependencies]) {
-    def nativeType
-    if (System.properties['os.name'].toLowerCase().contains('windows'))
-        nativeType = 'msi'
-    if (System.properties['os.name'].toLowerCase().contains('mac'))
-        nativeType = 'dmg'
-    if (System.properties['os.name'].toLowerCase().contains('linux'))
-        nativeType = 'rpm'
+task jpackage(type: Exec, dependsOn: [build]) {
+    commandLine "${System.getenv('JAVA_HOME')}/bin/jpackage",
+//            'create-app-image',
+            '--name', 'remembrance-agent-desktop',
+            '--input', jar.destinationDir.getPath(),
+            '--dest', "${buildDir}/image",
+            '--main-jar', jar.archivePath.getName(),
+            '--app-version', envVersion
 
-    def dependencies = []
-    configurations.runtime.forEach({ file ->
-        dependencies.add('-srcfiles')
-        dependencies.add(file.getName())
-    })
-
-    def paramEmbeddedJRE = embeddedJRE ? [] : ['-Bruntime=']
-
-    def name = 'Remembrance Agent v' + envVersion
-
-    workingDir project.projectDir
-    commandLine = [
-            'javapackager',
-            '-deploy',
-            '-nosign',
-            '-native', nativeType,
-            '-outdir', "${buildDir}/dist",
-            '-outfile', project.name,
-            '-name', name,
-            '-title', name,
-            '-appclass', mainClassName,
-            '-srcdir', libsDir,
-            '-srcfiles', jar.archiveName,
-            '-BappVersion=' + envVersion
-    ] + dependencies + paramEmbeddedJRE
+    environment << [JPACKAGE_DEBUG: true]
 }
+
