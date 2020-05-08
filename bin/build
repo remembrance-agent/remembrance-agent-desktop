@@ -1,38 +1,46 @@
 #!/bin/sh
 
-# Source: https://superuser.com/questions/912955/how-to-make-a-java-jar-file-to-be-a-single-file-executable
+# Exit on error
+set -e
 
-JAR_PATH="./build/libs/remembrance-agent-v$VERSION-all.jar"
-STUB_PATH="./bin/_stub"
-RA_PATH="./bin/ra"
+if [ -z ${VERSION+x} ]; then
+  echo "VERSION is not set. Set a VERSION value (x.y.z) before continuing.";
+  exit 1
+fi
 
-echo ">>> BUILDING WITH GRADLE"
-./gradlew build --stacktrace
+printf ">>> BUILDING WITH GRADLE... "
+./gradlew build --stacktrace 2>&1 >/dev/null
 
-echo ">>> BUILDING ra FILE"
-cat $STUB_PATH $JAR_PATH > $RA_PATH
-chmod +x $RA_PATH
+printf "done.\n"
 
-echo ">>> DONE"
+JAR_PATH="./build/libs/remembrance-agent-desktop-v${VERSION}-all.jar"
+
+printf ">>> JAR FILE WRITTEN TO %s\n" "${JAR_PATH}"
 
 # SEE https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
 
-JAVA_HOME=`C:\Program Files\Java\jdk1.8.0_241`
-APP_DIR_NAME=ra.exe
+OUTDIR=build
+OUTFILE=RemebranceAgentDesktop.exe
 
-#-deploy -Bruntime=/Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home \
+printf ">>> RUNNING javapackager... "
+
 javapackager \
-  -deploy -Bruntime=${JAVA_HOME} \
-  -native image \
+  -deploy \
+  -Bruntime= \
+  -BappVersion="${VERSION}" \
+  -native exe \
   -srcdir . \
-  -srcfiles build/libs/remembrance-agent-desktop-v2.0.0-all.jar \
-  -outdir release \
-  -outfile ${APP_DIR_NAME} \
-  -appclass io.p13i.ra.RemebranceAgentClient \
-  -name "RemebranceAgent" \
-  -title "RemebranceAgent" \
+  -srcfiles "${JAR_PATH}" \
+  -outdir ${OUTDIR} \
+  -outfile ${OUTFILE} \
+  -appclass io.p13i.ra.RemembranceAgentClient \
+  -name "Remebrance Agent Desktop" \
+  -title "Remebrance Agent Desktop" \
   -nosign \
-  -v
+  2>&1 >/dev/null
 
-echo ""
-echo "If that succeeded, it created \"release/bundles/${APP_DIR_NAME}\""
+printf "done.\n"
+
+echo ">>> EXE FILE WRITTEN TO ${OUTDIR}/bundles/${OUTFILE}"
+
+echo ">>> SUCCESSFUL BUILD"
