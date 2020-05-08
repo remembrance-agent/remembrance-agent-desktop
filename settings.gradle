@@ -1,4 +1,4 @@
 rootProject.name = 'remembrance-agent-desktop'
 
 include ':remembrance-agent'
-project(':remembrance-agent').projectDir = new File('../remembrance-agent')
+project(':remembrance-agent').projectDir = new File('./libs/remembrance-agent')

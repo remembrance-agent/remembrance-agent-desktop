@@ -9,9 +9,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+
+    - name: Checkout submodules
+      uses: srt32/git-actions@v0.0.3
+      with:
+        args: git submodule update --init --recursive
+
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
+
     - name: Build
       run: sudo VERSION=2.0.0 bash ./bin/build
