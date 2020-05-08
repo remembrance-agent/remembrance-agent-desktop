@@ -13,7 +13,6 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Gradle
-      run: ./gradlew build
-    - name: Test with Gradle
-      run: ./gradlew test
+    - name: Bash for GitHub Actions
+      uses: jcblw/bash@1.0.0
+      run: VERSION=2.0.0 ./bin/build
