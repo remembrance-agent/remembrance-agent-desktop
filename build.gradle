@@ -9,6 +9,7 @@ application {
 }
 
 def mainClassName = 'io.p13i.ra.RemembranceAgentClient'
+def embeddedJRE = true
 
 jar {
     manifest {
@@ -72,4 +73,42 @@ dependencies {
 
     // jsoup HTML parser library @ https://jsoup.org/
     compile 'org.jsoup:jsoup:1.12.1'
+}
+
+task copyDependencies(type: Copy) {
+    destinationDir libsDir
+    from configurations.runtime
+}
+
+task javapackager(type: Exec, dependsOn: [assemble, copyDependencies]) {
+    def nativeType
+    if (System.properties['os.name'].toLowerCase().contains('windows'))
+        nativeType = 'msi'
+    if (System.properties['os.name'].toLowerCase().contains('mac'))
+        nativeType = 'dmg'
+    if (System.properties['os.name'].toLowerCase().contains('linux'))
+        nativeType = 'rpm'
+
+    def dependencies = []
+    configurations.runtime.forEach({ file ->
+        dependencies.add('-srcfiles')
+        dependencies.add(file.getName())
+    })
+
+    def paramEmbeddedJRE = embeddedJRE ? [] : ['-Bruntime=']
+
+    workingDir project.projectDir
+    commandLine = [
+            'javapackager',
+            '-deploy',
+            '-nosign',
+            '-native', nativeType,
+            '-outdir', "${buildDir}/dist",
+            '-outfile', project.name,
+            '-name', 'Remembrance Agent',
+            '-appclass', mainClassName,
+            '-srcdir', libsDir,
+            '-srcfiles', jar.archiveName,
+            '-BappVersion=' + envVersion
+    ] + dependencies + paramEmbeddedJRE
 }
