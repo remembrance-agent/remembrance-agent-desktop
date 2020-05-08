@@ -22,7 +22,8 @@ jobs:
         java-package: jdk
         architecture: x64
 
+    - name: Print javac version
+      run: echo $(javac --version)
+
     - name: Build
-      run:
-      - echo $(javac --version)
-      - sudo JAVA_HOME=$(dirname $(dirname $(which javac))) VERSION=2.0.0 ./gradlew jpackage --stacktrace
+      run: sudo JAVA_HOME=$(dirname $(dirname $(which javac))) VERSION=2.0.0 ./gradlew jpackage --stacktrace
