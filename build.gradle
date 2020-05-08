@@ -80,7 +80,7 @@ task copyDependencies(type: Copy) {
     from configurations.runtime
 }
 
-task javapackager(type: Exec, dependsOn: [assemble, copyDependencies]) {
+task distribute(type: Exec, dependsOn: [assemble, copyDependencies]) {
     def nativeType
     if (System.properties['os.name'].toLowerCase().contains('windows'))
         nativeType = 'msi'

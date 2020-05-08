@@ -21,4 +21,4 @@ jobs:
         java-version: 1.8
 
     - name: Build
-      run: sudo VERSION=2.0.0 bash ./bin/build
+      run: sudo VERSION=2.0.0 gradlew distribute
