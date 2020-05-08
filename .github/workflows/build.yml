@@ -15,4 +15,5 @@ jobs:
         java-version: 1.8
     - name: Bash for GitHub Actions
       uses: jcblw/bash@1.0.0
-      args: VERSION=2.0.0 ./bin/build
+      with:
+        args: VERSION=2.0.0 ./bin/build
