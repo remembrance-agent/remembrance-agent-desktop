@@ -1,0 +1,3 @@
+[submodule "libs/remembrance-agent"]
+	path = libs/remembrance-agent
+	url = ../remembrance-agent
