@@ -25,5 +25,8 @@ jobs:
     - name: Print javac version
       run: echo $(javac --version)
 
+    - name: Set Java Home
+      run: export JAVA_HOME=$(dirname $(dirname $(which javac))) && echo ${JAVA_HOME}
+
     - name: Build
-      run: sudo JAVA_HOME=$(dirname $(dirname $(which javac))) VERSION=2.0.0 ./gradlew jpackage --stacktrace
+      run: sudo VERSION=2.0.0 ./gradlew jpackage --stacktrace
