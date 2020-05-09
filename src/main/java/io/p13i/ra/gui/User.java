@@ -39,6 +39,12 @@ public class User {
                         return FileIO.ensureFolderExists(RA.getDirectory() + File.separator + "~cache");
                     }
                 }
+
+                public static class Tokens {
+                    public static String getDirectory() {
+                        return FileIO.ensureFolderExists(RA.getDirectory() + File.separator + "~tokens");
+                    }
+                }
             }
         }
     }

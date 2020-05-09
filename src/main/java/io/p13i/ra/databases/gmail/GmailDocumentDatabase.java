@@ -8,6 +8,8 @@ import com.google.api.services.gmail.model.Message;
 import com.google.api.services.gmail.model.MessagePart;
 import com.google.api.services.gmail.model.MessagePartHeader;
 import io.p13i.ra.databases.AbstractDocumentDatabase;
+import io.p13i.ra.gui.User;
+import io.p13i.ra.utils.FileIO;
 import io.p13i.ra.utils.GoogleAPIUtils;
 import io.p13i.ra.utils.LoggerUtils;
 
@@ -127,7 +129,8 @@ public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocumen
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(GmailScopes.GMAIL_READONLY);
-    private static final String TOKENS_DIRECTORY_PATH = "gmail-tokens";
+    private static final String TOKENS_DIRECTORY_PATH =
+            FileIO.ensureFolderExists(User.Home.Documents.RA.Tokens.getDirectory() + java.io.File.separator + "gmail");
 
     /**
      * Gets a Google Mail client

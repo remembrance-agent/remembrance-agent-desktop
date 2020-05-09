@@ -7,6 +7,8 @@ import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
 import io.p13i.ra.databases.AbstractDocumentDatabase;
+import io.p13i.ra.gui.User;
+import io.p13i.ra.utils.FileIO;
 import io.p13i.ra.utils.GoogleAPIUtils;
 import io.p13i.ra.utils.LoggerUtils;
 
@@ -34,7 +36,8 @@ public class GoogleDriveFolderDocumentDatabase extends AbstractDocumentDatabase<
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_READONLY);
-    private static final String TOKENS_DIRECTORY_PATH = "gooele-drive-tokens";
+    private static final String TOKENS_DIRECTORY_PATH =
+            FileIO.ensureFolderExists(User.Home.Documents.RA.Tokens.getDirectory() + java.io.File.separator + "google-drive");
 
     private final String rootFolderID;
     private final List<GoogleDriveDocument> googleDriveDocuments;
