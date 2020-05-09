@@ -15,10 +15,13 @@ jobs:
       with:
         args: git submodule update --init --recursive
 
-    - name: Set up JDK 14
+    - name: Download JDK 14
+      run: curl -O "https://static.azul.com/zulu/bin/zulu14.27.1-ca-jdk14-linux_musl_x64.tar.gz"
+
+    - name: Setup Java
       uses: actions/setup-java@v1
       with:
-        java-version: zulu14.27.1-ca-jdk14
+        jdkFile: zulu14.27.1-ca-jdk14-linux_musl_x64.tar.gz
 
     - name: Print javac version
       run: echo $(javac --version)
