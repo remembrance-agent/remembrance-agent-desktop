@@ -87,7 +87,6 @@ task jpackage(type: Exec, dependsOn: [build]) {
         'jpackage',
         '--name', 'remembrance-agent-desktop',
         '--input', jar.destinationDir.getPath(),
-        '--icon', 'img/icon.ico',
         '--dest', "${buildDir}/image",
         '--main-jar', jar.archivePath.getName(),
         '--app-version', envVersion
@@ -95,6 +94,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
 
     if (OperatingSystem.current().isWindows()) {
         options += [
+            '--icon', 'img/icon.ico',
             '--win-dir-chooser',
             '--win-menu',
             '--win-shortcut',
@@ -102,6 +102,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
         ]
     } else if (OperatingSystem.current().isMacOsX()) {
         options += [
+            '--icon', 'img/icon.icns',
             '--mac-package-name',
             '--mac-sign',
         ]
