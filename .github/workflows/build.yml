@@ -7,7 +7,7 @@ jobs:
     runs-on: macos
 
     env:
-      VERSION: ${{ cat VERSION }}
+      VERSION: $(cat VERSION)
 
     steps:
       - uses: actions/checkout@v2
@@ -26,14 +26,14 @@ jobs:
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
-          name: ra-v${{ cat VERSION }}-macos-dmg
-          path: build/image/remembrance-agent-desktop-${{ cat VERSION }}.dmg
+          name: remembrance-agent-desktop-v${{ env.VERSION }}-macos-dmg
+          path: build/image/remembrance-agent-desktop-v${{ env.VERSION }}.dmg
 
   Windows:
     runs-on: [windows-latest]
 
     env:
-      VERSION: ${{ cat VERSION }}
+      VERSION: $(cat VERSION)
 
     steps:
       - uses: actions/checkout@v2
@@ -52,5 +52,5 @@ jobs:
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: ra-v${{ cat VERSION }}-windows-msi
-          path: build/image/remembrance-agent-desktop-${{ cat VERSION }}.msi
+          name: remembrance-agent-desktop-desktop-v${{ env.VERSION }}-windows-msi
+          path: build/image/remembrance-agent-desktop-v${{ env.VERSION }}.msi
