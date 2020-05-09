@@ -18,9 +18,7 @@ jobs:
     - name: Set up JDK 14
       uses: actions/setup-java@v1
       with:
-        java-version: 14.0.0
-        java-package: jdk
-        architecture: x64
+        java-version: openjdk@1.14
 
     - name: Print javac version
       run: echo $(javac --version)
