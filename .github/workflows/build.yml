@@ -46,11 +46,8 @@ jobs:
     runs-on: [macos]
     steps:
       - uses: actions/checkout@v2
-
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
         with:
-          args: git submodule update --init --recursive
+          submodules: recursive
 
       - uses: actions/setup-java@v1
         with:
@@ -77,11 +74,8 @@ jobs:
     runs-on: [windows-latest]
     steps:
       - uses: actions/checkout@v2
-
-      - name: Checkout submodules
-        uses: srt32/git-actions@v0.0.3
         with:
-          args: git submodule update --init --recursive
+          submodules: recursive
 
       - uses: actions/setup-java@v1
         with:
