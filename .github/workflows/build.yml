@@ -56,7 +56,7 @@ jobs:
           architecture: x64
 
       - name: Package jar as dmg installer
-        run: VERSION=2.0.0 ./gradlew jpackage
+        run: ./gradlew jpackage
 
       - name: Upload dmg
         uses: actions/upload-artifact@v1
@@ -79,7 +79,7 @@ jobs:
           architecture: x64
 
       - name: Package jar as exe
-        run: VERSION=2.0.0 ./gradlew jpackage
+        run: ./gradlew jpackage
 
       - name: View artifacts
         run: dir
