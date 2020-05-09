@@ -74,7 +74,6 @@ jobs:
 
   windows:
 
-    needs: fat
     runs-on: [windows-latest]
     steps:
       - uses: actions/checkout@v2
