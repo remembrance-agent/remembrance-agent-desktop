@@ -93,12 +93,14 @@ task jpackage(type: Exec, dependsOn: [build]) {
     OperatingSystem os = OperatingSystem.current();
     if (os.isWindows()) {
         options += [
-            '--type', 'app-image',
             '--icon', 'img/icon.ico',
+            '--win-dir-chooser',
+            '--win-menu',
+            '--win-shortcut',
+            '--win-per-user-install',
         ]
     } else if (os.isMacOsX()) {
         options += [
-            '--type', 'app-image',
             '--icon', 'img/icon.icns',
             '--mac-package-name', 'RA',
         ]
