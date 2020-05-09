@@ -27,6 +27,9 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.text }}
 
+      - name: List build images
+        run: ls build/images
+
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
@@ -56,6 +59,9 @@ jobs:
         run: ./gradlew jpackage --stacktrace
         env:
           VERSION: ${{ steps.version.outputs.text }}
+
+      - name: List build images
+        run: dir build\images
 
       - name: Upload installer
         uses: actions/upload-artifact@v1
