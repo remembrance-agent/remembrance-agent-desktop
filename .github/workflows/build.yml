@@ -28,7 +28,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.text }}
 
       - name: List build images
-        run: ls build/images
+        run: ls build/image
 
       - name: Upload dmg
         uses: actions/upload-artifact@v1
@@ -61,7 +61,7 @@ jobs:
           VERSION: ${{ steps.version.outputs.text }}
 
       - name: List build images
-        run: dir build\images
+        run: dir build\image
 
       - name: Upload installer
         uses: actions/upload-artifact@v1
