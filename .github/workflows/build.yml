@@ -55,11 +55,6 @@ jobs:
           java-package: jdk
           architecture: x64
 
-      - name: Download fat jar
-        uses: actions/download-artifact@v1
-        with:
-          name: jars
-
       - name: Package jar as dmg installer
         run: VERSION=2.0.0 ./gradlew jpackage
 
@@ -82,11 +77,6 @@ jobs:
           java-version: '14.0.0'
           java-package: jdk
           architecture: x64
-
-      - name: Download fat jar
-        uses: actions/download-artifact@v1
-        with:
-          name: jars
 
       - name: Package jar as exe
         run: VERSION=2.0.0 ./gradlew jpackage
