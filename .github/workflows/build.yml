@@ -3,25 +3,106 @@ name: Java CI
 on: [push]
 
 jobs:
-  build:
+#  fatJar:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v2
+#      - name: Set up JDK 1.8
+#        uses: actions/setup-java@v1
+#        with:
+#          java-version: 1.8
+#      - name: Build fat jar
+#        run: sbt assembly
+#      - name: Upload fat jar
+#        uses: actions/upload-artifact@v1
+#        with:
+#          name: jars
+#          path: target/scala-2.13/swingtest-assembly-1.0.jar
+#
+#  build:
+#
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#    - uses: actions/checkout@v1
+#
+#    - name: Checkout submodules
+#      uses: srt32/git-actions@v0.0.3
+#      with:
+#        args: git submodule update --init --recursive
+#
+#    - name: Setup Java
+#      uses: actions/setup-java@v1
+#      with:
+#        java-version: 1.14
+#
+#    - name: Add gradle.properties
+#      run: echo "org.gradle.java.home=$(dirname $(dirname $(which javac)))" > gradle.properties && cat gradle.properties
+#
+#    - name: Build
+#      run: sudo VERSION=2.0.0 ./gradlew jpackage --stacktrace
 
-    runs-on: ubuntu-latest
-
+  osx:
+    runs-on: [macos]
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
 
-    - name: Checkout submodules
-      uses: srt32/git-actions@v0.0.3
-      with:
-        args: git submodule update --init --recursive
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
 
-    - name: Setup Java
-      uses: actions/setup-java@v1
-      with:
-        java-version: 14
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.0.0'
+          java-package: jdk
+          architecture: x64
 
-    - name: Add gradle.properties
-      run: echo "org.gradle.java.home=$(dirname $(dirname $(which javac)))" > gradle.properties && cat gradle.properties
+      - name: Download fat jar
+        uses: actions/download-artifact@v1
+        with:
+          name: jars
 
-    - name: Build
-      run: sudo VERSION=2.0.0 ./gradlew jpackage --stacktrace
+      - name: Package jar as dmg installer
+        run: VERSION=2.0.0 ./gradlew jpackage
+
+      - name: Upload dmg
+        uses: actions/upload-artifact@v1
+        with:
+          name: dmgs
+          path: remembrance-agent-desktop-2.0.0.dmg
+
+  windows:
+
+    needs: fat
+    runs-on: [windows-latest]
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Checkout submodules
+        uses: srt32/git-actions@v0.0.3
+        with:
+          args: git submodule update --init --recursive
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.0.0'
+          java-package: jdk
+          architecture: x64
+
+      - name: Download fat jar
+        uses: actions/download-artifact@v1
+        with:
+          name: jars
+
+      - name: Package jar as exe
+        run: VERSION=2.0.0 ./gradlew jpackage
+
+      - name: View artifacts
+        run: dir
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v1
+        with:
+          name: msis
+          path: remembrance-agent-desktop-2.0.0.exe

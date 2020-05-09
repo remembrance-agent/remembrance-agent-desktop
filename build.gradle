@@ -81,7 +81,7 @@ task copyDependencies(type: Copy) {
 }
 
 task jpackage(type: Exec, dependsOn: [build]) {
-    commandLine "${System.getenv('JAVA_HOME')}/bin/jpackage",
+    commandLine "jpackage",
 //            'create-app-image',
             '--name', 'remembrance-agent-desktop',
             '--input', jar.destinationDir.getPath(),
