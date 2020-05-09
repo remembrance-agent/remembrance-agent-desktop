@@ -194,31 +194,6 @@ public class GUI {
                             }
                         });
                     }});
-                    add(new JSeparator());
-                    add(new JMenuItem("Select ra-client.log directory...") {{
-                        addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                JFileChooser fileChooser = new JFileChooser();
-                                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                                // disable the "All files" option.
-                                fileChooser.setAcceptAllFileFilterUsed(false);
-                                if (fileChooser.showOpenDialog(mJFrame) == JFileChooser.APPROVE_OPTION) {
-                                    User.Preferences.set(RAClientLogFile, fileChooser.getSelectedFile().toPath().toString() + File.separator + "ra-client.log");
-                                    JOptionPane.showMessageDialog(mJFrame, "Selected ra-client.log file: " + User.Preferences.getString(RAClientLogFile));
-                                }
-                            }
-                        });
-                    }});
-                    add(new JMenuItem("Open ra-client.log log...") {{
-                        addActionListener(e -> {
-                            try {
-                                Desktop.getDesktop().open(new File(User.Preferences.getString(RAClientLogFile)));
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-                        });
-                    }});
                 }});
                 add(new JMenu("Keylogger") {{
                     add(new JMenuItem("Clear buffer") {{
