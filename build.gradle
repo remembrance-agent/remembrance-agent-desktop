@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem;
+
 plugins {
     id 'java'
     id 'application'
@@ -9,7 +11,6 @@ application {
 }
 
 def mainClassName = 'io.p13i.ra.RemembranceAgentClient'
-def embeddedJRE = true
 
 jar {
     manifest {
@@ -81,14 +82,31 @@ task copyDependencies(type: Copy) {
 }
 
 task jpackage(type: Exec, dependsOn: [build]) {
-    commandLine "jpackage",
-//            'create-app-image',
-            '--name', 'remembrance-agent-desktop',
-            '--input', jar.destinationDir.getPath(),
-            '--icon', 'img/icon.ico',
-            '--dest', "${buildDir}/image",
-            '--main-jar', jar.archivePath.getName(),
-            '--app-version', envVersion
+
+    def options = [
+        '--name', 'remembrance-agent-desktop',
+        '--input', jar.destinationDir.getPath(),
+        '--icon', 'img/icon.ico',
+        '--dest', "${buildDir}/image",
+        '--main-jar', jar.archivePath.getName(),
+        '--app-version', envVersion
+    ]
+
+    if (OperatingSystem.current().isWindows()) {
+        options += [
+            '--win-dir-chooser',
+            '--win-menu',
+            '--win-shortcut',
+            '--win-per-user-install',
+        ]
+    } else if (OperatingSystem.current().isMacOsX()) {
+        options += [
+            '--mac-package-name',
+            '--mac-sign',
+        ]
+    }
+
+    commandLine "jpackage " + String.join(" ", options)
 
     environment << [JPACKAGE_DEBUG: true]
 }
