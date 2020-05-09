@@ -1,5 +1,11 @@
 import org.gradle.internal.os.OperatingSystem;
 
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
+}
+
 // Get the version string from the environment
 String envVersion = System.getenv('VERSION')
 
@@ -9,12 +15,6 @@ if (envVersion == null || envVersion.length() < "x.y.z".length()) {
 
 group 'io.p13i'
 version "v" + envVersion
-
-plugins {
-    id 'java'
-    id 'application'
-    id 'com.github.johnrengelman.shadow' version '4.0.4'
-}
 
 def mainClass = 'io.p13i.ra.RemembranceAgentClient'
 
