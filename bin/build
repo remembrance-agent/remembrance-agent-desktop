@@ -1,17 +1,46 @@
 #!/bin/sh
-set -e -o pipefail
 
-# Source: https://superuser.com/questions/912955/how-to-make-a-java-jar-file-to-be-a-single-file-executable
+# Exit on error
+set -e
 
-JAR_PATH="./build/libs/remembrance-agent-v$VERSION-all.jar"
-STUB_PATH="./bin/_stub"
-RA_PATH="./bin/ra"
+if [ -z ${VERSION+x} ]; then
+  echo "VERSION is not set. Set a VERSION value (x.y.z) before continuing.";
+  exit 1
+fi
 
-echo ">>> BUILDING WITH GRADLE"
-./gradlew build --stacktrace
+printf ">>> BUILDING WITH GRADLE... "
+./gradlew build --stacktrace 2>&1 >/dev/null
 
-echo ">>> BUILDING ra FILE"
-cat $STUB_PATH $JAR_PATH > $RA_PATH
-chmod +x $RA_PATH
+printf "done.\n"
 
-echo ">>> DONE"
+JAR_PATH="./build/libs/remembrance-agent-desktop-v${VERSION}-all.jar"
+
+printf ">>> JAR FILE WRITTEN TO %s\n" "${JAR_PATH}"
+
+# SEE https://docs.oracle.com/javase/8/docs/technotes/tools/unix/javapackager.html
+
+OUTDIR=build
+OUTFILE=RemebranceAgentDesktop.exe
+
+printf ">>> RUNNING javapackager... "
+
+javapackager \
+  -deploy \
+  -Bruntime= \
+  -BappVersion="${VERSION}" \
+  -native exe \
+  -srcdir . \
+  -srcfiles "${JAR_PATH}" \
+  -outdir ${OUTDIR} \
+  -outfile ${OUTFILE} \
+  -appclass io.p13i.ra.RemembranceAgentClient \
+  -name "Remebrance Agent Desktop" \
+  -title "Remebrance Agent Desktop" \
+  -nosign \
+  2>&1 >/dev/null
+
+printf "done.\n"
+
+echo ">>> EXE FILE WRITTEN TO ${OUTDIR}/bundles/${OUTFILE}"
+
+echo ">>> SUCCESSFUL BUILD"

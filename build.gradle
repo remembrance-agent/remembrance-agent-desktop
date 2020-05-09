@@ -9,6 +9,7 @@ application {
 }
 
 def mainClassName = 'io.p13i.ra.RemembranceAgentClient'
+def embeddedJRE = true
 
 jar {
     manifest {
@@ -29,8 +30,8 @@ if (envVersion == null) {
 group 'io.p13i'
 version "v" + envVersion
 
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
+targetCompatibility = 14
+sourceCompatibility = 14
 
 repositories {
     mavenCentral()
@@ -74,40 +75,20 @@ dependencies {
     compile 'org.jsoup:jsoup:1.12.1'
 }
 
-def embeddedJRE = true
-
 task copyDependencies(type: Copy) {
     destinationDir libsDir
     from configurations.runtime
 }
 
-task javapackager(type: Exec, dependsOn: [assemble, copyDependencies]) {
-    def nativeType
-    if (System.properties['os.name'].toLowerCase().contains('windows'))
-        nativeType = 'msi'
-    if (System.properties['os.name'].toLowerCase().contains('mac'))
-        nativeType = 'dmg'
-    if (System.properties['os.name'].toLowerCase().contains('linux'))
-        nativeType = 'rpm'
+task jpackage(type: Exec, dependsOn: [build]) {
+    commandLine "jpackage",
+//            'create-app-image',
+            '--name', 'remembrance-agent-desktop',
+            '--input', jar.destinationDir.getPath(),
+            '--dest', "${buildDir}/image",
+            '--main-jar', jar.archivePath.getName(),
+            '--app-version', envVersion
 
-    def dependencies = []
-    configurations.runtime.forEach({ file ->
-        dependencies.add('-srcfiles')
-        dependencies.add(file.getName())
-    })
-
-    def paramEmbeddedJRE = embeddedJRE ? [] : ['-Bruntime=']
-
-    workingDir project.projectDir
-    commandLine = [
-            'javapackager',
-            '-deploy',
-            '-native', nativeType,
-            '-outdir', "dist",
-            '-outfile', "ra",
-            '-name', 'Remembrance Agent',
-            '-appclass', mainClassName,
-            '-srcdir', libsDir,
-            '-srcfiles', jar.archiveName
-    ] + dependencies + paramEmbeddedJRE
+    environment << [JPACKAGE_DEBUG: true]
 }
+
