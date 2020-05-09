@@ -89,7 +89,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
         '--input', jar.destinationDir.getPath(),
         '--dest', "${buildDir}/image",
         '--main-jar', jar.archivePath.getName(),
-        '--app-version', envVersion
+        '--app-version', envVersion,
     ]
 
     if (OperatingSystem.current().isWindows()) {
@@ -104,7 +104,6 @@ task jpackage(type: Exec, dependsOn: [build]) {
         options += [
             '--icon', 'img/icon.icns',
             '--mac-package-name', 'RA',
-            '--mac-sign',
         ]
     }
 
