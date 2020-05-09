@@ -18,7 +18,7 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v1
       with:
-        java-version: zulu
+        java-version: 14
 
     - name: Add gradle.properties
       run: echo "org.gradle.java.home=$(dirname $(dirname $(which javac)))" > gradle.properties && cat gradle.properties
