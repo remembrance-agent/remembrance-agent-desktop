@@ -98,7 +98,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
         ]
     } else if (os.isMacOsX()) {
         options += [
-            '--type', 'dmg',
+            '--type', 'app-image',
             '--icon', 'img/icon.icns',
             '--mac-package-name', 'RA',
         ]
