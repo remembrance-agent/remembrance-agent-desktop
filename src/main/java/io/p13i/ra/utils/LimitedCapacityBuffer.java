@@ -27,7 +27,7 @@ public class LimitedCapacityBuffer<T> implements Iterable<T> {
      * @param element the element to add
      */
     public void add(T element) {
-        if (queue.size() >= maximumSize) {
+        while (queue.size() >= maximumSize) {
             queue.poll();
         }
         queue.add(element);
