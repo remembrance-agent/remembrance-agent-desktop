@@ -34,7 +34,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: ra-desktop-v${{ steps.version.outputs.text }}-macos-dmg
-          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.app
+          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.dmg
 
   Windows:
     runs-on: [windows-latest]
