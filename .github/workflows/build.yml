@@ -22,11 +22,10 @@ jobs:
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
-          name: macOS dmg
+          name: ra-macos-dmg
           path: build/image/remembrance-agent-desktop-2.0.0.dmg
 
   windows:
-
     runs-on: [windows-latest]
     steps:
       - uses: actions/checkout@v2
@@ -45,5 +44,5 @@ jobs:
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: Windows exe
+          name: ra-windows-exe
           path: build/image/remembrance-agent-desktop-2.0.0.exe
