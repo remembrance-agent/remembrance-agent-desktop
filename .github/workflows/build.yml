@@ -30,7 +30,7 @@ jobs:
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
-          name: remembrance-agent-desktop-${{ steps.version.outputs.text }}-macos-dmg
+          name: ra-desktop-v${{ steps.version.outputs.text }}-macos-dmg
           path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.dmg
 
   Windows:
@@ -60,5 +60,5 @@ jobs:
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: remembrance-agent-desktop-desktop-${{ steps.version.outputs.text }}-windows-msi
+          name: ra-desktop-v${{ steps.version.outputs.text }}-windows-msi
           path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.msi
