@@ -21,6 +21,7 @@ jobs:
     - name: Setup Java
       uses: actions/setup-java@v1
       with:
+        java-version: 14
         jdkFile: zulu14.27.1-ca-jdk14-linux_musl_x64.tar.gz
 
     - name: Print javac version
