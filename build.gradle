@@ -85,6 +85,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
 //            'create-app-image',
             '--name', 'remembrance-agent-desktop',
             '--input', jar.destinationDir.getPath(),
+            '--icon', 'img/icon.ico',
             '--dest', "${buildDir}/image",
             '--main-jar', jar.archivePath.getName(),
             '--app-version', envVersion
