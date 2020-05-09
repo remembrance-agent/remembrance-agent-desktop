@@ -24,11 +24,8 @@ jobs:
         java-version: 14
         jdkFile: zulu14.27.1-ca-jdk14-linux_musl_x64.tar.gz
 
-    - name: Set Java Home
-      run: export JAVA_HOME=$(dirname $(dirname $(which javac))) && echo ${JAVA_HOME}
-
-    - name: Print javac version
-      run: echo "org.gradle.java.home=$(JAVA_HOME)" > gradle.properties && cat gradle.properties
+    - name: Add gradle.properties
+      run: echo "org.gradle.java.home=$(dirname $(dirname $(which javac)))" > gradle.properties && cat gradle.properties
 
     - name: Build
       run: sudo VERSION=2.0.0 ./gradlew jpackage --stacktrace
