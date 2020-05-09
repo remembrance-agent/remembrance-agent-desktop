@@ -83,7 +83,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
 
     def options = [
         'jpackage',
-        '--name', 'remembrance-agent-desktop',
+        '--name', '"Remembrance Agent Desktop"',
         '--input', jar.destinationDir.getPath(),
         '--dest', "${buildDir}/image",
         '--main-jar', jar.archivePath.getName(),
@@ -93,7 +93,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
     OperatingSystem os = OperatingSystem.current();
     if (os.isWindows()) {
         options += [
-            '--type', 'msi',
+            '--type', 'app-image',
             '--icon', 'img/icon.ico',
             '--win-dir-chooser',
             '--win-menu',
