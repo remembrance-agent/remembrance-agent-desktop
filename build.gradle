@@ -84,6 +84,7 @@ task copyDependencies(type: Copy) {
 task jpackage(type: Exec, dependsOn: [build]) {
 
     def options = [
+        'jpackage',
         '--name', 'remembrance-agent-desktop',
         '--input', jar.destinationDir.getPath(),
         '--icon', 'img/icon.ico',
@@ -106,7 +107,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
         ]
     }
 
-    commandLine "jpackage " + String.join(" ", options)
+    commandLine options
 
     environment << [JPACKAGE_DEBUG: true]
 }
