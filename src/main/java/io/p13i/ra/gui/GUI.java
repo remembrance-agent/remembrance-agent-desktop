@@ -210,10 +210,13 @@ public class GUI {
                         addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                JFileChooser fileChooser = new JFileChooser();
-                                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                                // disable the "All files" option.
-                                fileChooser.setAcceptAllFileFilterUsed(false);
+
+                                JFileChooser fileChooser = new JFileChooser() {{
+                                    setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                    // disable the "All files" option.
+                                    setAcceptAllFileFilterUsed(false);
+                                }};
+
                                 if (fileChooser.showOpenDialog(mJFrame) == JFileChooser.APPROVE_OPTION) {
                                     User.Preferences.set(KeystrokesLogFile, fileChooser.getSelectedFile().toPath().toString() + File.separator + "keystrokes.log");
                                     mKeystrokeBufferLabel.setBorder(BorderFactory.createCompoundBorder(
