@@ -68,12 +68,12 @@ public class User {
             /**
              * The name of the node used in the backing store
              */
-            private String nodeName;
+            private final String nodeName;
 
             /**
              * The default value for the item if the node is not found in the backing store
              */
-            private String defaultValue;
+            private final String defaultValue;
 
             Preference(String nodeName, String defaultValue) {
                 this.nodeName = nodeName;
