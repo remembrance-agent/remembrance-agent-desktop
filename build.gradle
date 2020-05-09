@@ -95,10 +95,6 @@ task jpackage(type: Exec, dependsOn: [build]) {
         options += [
             '--type', 'app-image',
             '--icon', 'img/icon.ico',
-            '--win-dir-chooser',
-            '--win-menu',
-            '--win-shortcut',
-            '--win-per-user-install',
         ]
     } else if (os.isMacOsX()) {
         options += [
