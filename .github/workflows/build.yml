@@ -3,11 +3,11 @@ name: Java CI
 on: [push]
 
 jobs:
-  osx:
+  macOS:
     runs-on: macos
 
     env:
-      VERSION: $(cat VERSION)
+      VERSION: ${{ cat VERSION }}
 
     steps:
       - uses: actions/checkout@v2
@@ -26,14 +26,14 @@ jobs:
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
-          name: ra-v$(cat VERSION)-macos-dmg
-          path: build/image/remembrance-agent-desktop-$(cat VERSION).dmg
+          name: ra-v${{ cat VERSION }}-macos-dmg
+          path: build/image/remembrance-agent-desktop-${{ cat VERSION }}.dmg
 
-  windows:
+  Windows:
     runs-on: [windows-latest]
 
     env:
-      VERSION: $(cat VERSION)
+      VERSION: ${{ cat VERSION }}
 
     steps:
       - uses: actions/checkout@v2
@@ -46,11 +46,11 @@ jobs:
           java-package: jdk
           architecture: x64
 
-      - name: Create .exe
+      - name: Create .msi
         run: ./gradlew jpackage --stacktrace
 
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: ra-v$(cat VERSION)-windows-msi
-          path: build/image/remembrance-agent-desktop-$(cat VERSION).msi
+          name: ra-v${{ cat VERSION }}-windows-msi
+          path: build/image/remembrance-agent-desktop-${{ cat VERSION }}.msi
