@@ -52,7 +52,7 @@ jobs:
           java-package: jdk
           architecture: x64
 
-      - name: Create .msi
+      - name: Create .exe
         run: ./gradlew jpackage --stacktrace
         env:
           VERSION: ${{ steps.version.outputs.text }}
@@ -60,5 +60,5 @@ jobs:
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: ra-desktop-v${{ steps.version.outputs.text }}-windows-msi
-          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.msi
+          name: ra-desktop-v${{ steps.version.outputs.text }}-windows-exe
+          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.exe
