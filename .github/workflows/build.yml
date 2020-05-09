@@ -5,6 +5,10 @@ on: [push]
 jobs:
   osx:
     runs-on: macos
+
+    env:
+      VERSION: $(cat VERSION)
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -27,6 +31,10 @@ jobs:
 
   windows:
     runs-on: [windows-latest]
+
+    env:
+      VERSION: $(cat VERSION)
+
     steps:
       - uses: actions/checkout@v2
         with:

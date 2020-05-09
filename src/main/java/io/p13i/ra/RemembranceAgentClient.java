@@ -1,5 +1,6 @@
 package io.p13i.ra;
 
+import java.io.File;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,7 +48,7 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
 
     private static final Logger LOGGER = LoggerUtils.getLogger(RemembranceAgentClient.class);
 
-    public static final String VERSION = "2.0";
+    public static final String VERSION = FileIO.read(System.getProperty("user.dir") + File.separator + "VERSION");
 
     public static final String APPLICATION_NAME = "Remembrance Agent (v" + VERSION + ")";
 
