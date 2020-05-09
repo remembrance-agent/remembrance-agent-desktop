@@ -4,15 +4,17 @@ on: [push]
 
 jobs:
   macOS:
-    runs-on: macos
-
-    env:
-      VERSION: $(cat VERSION)
+    runs-on: [macos]
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+
+      - uses: pCYSl5EDgo/cat@master
+        id: version
+        with:
+          path: VERSION
 
       - uses: actions/setup-java@v1
         with:
@@ -22,23 +24,27 @@ jobs:
 
       - name: Create .dmg
         run: ./gradlew jpackage --stacktrace
+        env:
+          VERSION: ${{ steps.version.outputs.text }}
 
       - name: Upload dmg
         uses: actions/upload-artifact@v1
         with:
-          name: remembrance-agent-desktop-v${{ env.VERSION }}-macos-dmg
-          path: build/image/remembrance-agent-desktop-v${{ env.VERSION }}.dmg
+          name: remembrance-agent-desktop-v${{ steps.version.outputs.text }}-macos-dmg
+          path: build/image/remembrance-agent-desktop-v${{ steps.version.outputs.text }}.dmg
 
   Windows:
     runs-on: [windows-latest]
-
-    env:
-      VERSION: $(cat VERSION)
 
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
+
+      - uses: pCYSl5EDgo/cat@master
+        id: version
+        with:
+          path: VERSION
 
       - uses: actions/setup-java@v1
         with:
@@ -48,9 +54,11 @@ jobs:
 
       - name: Create .msi
         run: ./gradlew jpackage --stacktrace
+        env:
+          VERSION: ${{ steps.version.outputs.text }}
 
       - name: Upload installer
         uses: actions/upload-artifact@v1
         with:
-          name: remembrance-agent-desktop-desktop-v${{ env.VERSION }}-windows-msi
-          path: build/image/remembrance-agent-desktop-v${{ env.VERSION }}.msi
+          name: remembrance-agent-desktop-desktop-v${{ steps.version.outputs.text }}-windows-msi
+          path: build/image/remembrance-agent-desktop-v${{ steps.version.outputs.text }}.msi
