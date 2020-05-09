@@ -103,7 +103,7 @@ task jpackage(type: Exec, dependsOn: [build]) {
     } else if (OperatingSystem.current().isMacOsX()) {
         options += [
             '--icon', 'img/icon.icns',
-            '--mac-package-name',
+            '--mac-package-name', 'RA',
             '--mac-sign',
         ]
     }
