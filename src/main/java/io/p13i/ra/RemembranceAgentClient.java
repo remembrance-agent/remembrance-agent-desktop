@@ -355,6 +355,6 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
     }
 
     private static String getVersionString() {
-        return FileIO.read(System.getProperty("user.dir") + File.separator + "VERSION");
+        return FileIO.read(System.getProperty("user.dir") + File.separator + "static" + File.separator + "VERSION");
     }
 }
