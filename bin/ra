@@ -1,9 +1,0 @@
-#!/bin/sh
-set -e -o pipefail
-
-echo "VERSION $VERSION"
-
-JAR_PATH="/usr/local/bin/remembrance-agent-v$VERSION-all.jar"
-
-# $@ passes arguments from the command line to the JAR
-sudo java -jar ${JAR_PATH} $@

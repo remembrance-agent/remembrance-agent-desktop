@@ -1,26 +1,38 @@
+import org.gradle.internal.os.OperatingSystem;
+
 plugins {
     id 'java'
     id 'application'
     id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
+// Get the version string from the environment
+String envVersion = new File('VERSION').text
+
+if (envVersion == null || envVersion.length() < "x.y.z".length()) {
+    throw new RuntimeException("Version not found. Found " + envVersion);
+}
+
+group 'io.p13i'
+version "v" + envVersion
+
+def mainClass = 'io.p13i.ra.RemembranceAgentClient'
+
 application {
-    mainClassName = 'io.p13i.ra.RemembranceAgentClient'
+    mainClassName = mainClass
 }
 
 jar {
     manifest {
         attributes(
-                'Main-Class': 'io.p13i.ra.RemembranceAgentClient'
+                'Main-Class': mainClass
         )
     }
 }
 
-group 'io.p13i'
-version "v" + System.getenv('VERSION')
-
-targetCompatibility = 1.8
-sourceCompatibility = 1.8
+// Require Java 14 (includes jpackager tool)
+targetCompatibility = 14
+sourceCompatibility = 14
 
 repositories {
     mavenCentral()
@@ -39,8 +51,8 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
     testImplementation 'junit:junit:4.12'
-    
-    compile 'com.github.remembrance-agent:remembrance-agent:5c32f2b6dd'
+
+    compile project(":remembrance-agent")
 
     // Google Drive API
     compile 'com.google.api-client:google-api-client:1.23.0'
@@ -61,4 +73,45 @@ dependencies {
 
     // jsoup HTML parser library @ https://jsoup.org/
     compile 'org.jsoup:jsoup:1.12.1'
+}
+
+/**
+ * Builds the project and creates application images.
+ * Depends on the host operating system
+ */
+task jpackage(type: Exec, dependsOn: [build]) {
+
+    def options = [
+        'jpackage',
+        '--name', 'remembrance-agent-desktop',
+        '--input', jar.destinationDir.getPath(),
+        '--dest', "${buildDir}/image",
+        '--main-jar', jar.archivePath.getName(),
+        '--app-version', envVersion,
+    ]
+
+    OperatingSystem os = OperatingSystem.current();
+    if (os.isWindows()) {
+        options += [
+            '--icon', 'img/icon.ico',
+            '--win-dir-chooser',
+            '--win-menu',
+            '--win-shortcut',
+            '--win-per-user-install',
+        ]
+    } else if (os.isMacOsX()) {
+        options += [
+            '--icon', 'img/icon.icns',
+            '--mac-package-name', 'RA',
+        ]
+    } else if (os.isLinux() || os.isUnix()) {
+        throw new RuntimeException('Linux and Unix are currently not supported. Please use Windows or macOS');
+    } else {
+        throw new RuntimeException('Unknown operating system: ' + os.name);
+    }
+
+    // Run on the command line
+    commandLine options
+
+    environment << [JPACKAGE_DEBUG: true]
 }

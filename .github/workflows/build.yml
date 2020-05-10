@@ -1,0 +1,70 @@
+name: Java CI
+
+on: [push]
+
+jobs:
+  macOS:
+    runs-on: [macos]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: pCYSl5EDgo/cat@master
+        id: version
+        with:
+          path: VERSION
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.0.0'
+          java-package: jdk
+          architecture: x64
+
+      - name: Create .dmg
+        run: ./gradlew jpackage --stacktrace
+        env:
+          VERSION: ${{ steps.version.outputs.text }}
+
+      - name: List build images
+        run: ls build/image
+
+      - name: Upload dmg
+        uses: actions/upload-artifact@v1
+        with:
+          name: ra-desktop-v${{ steps.version.outputs.text }}-macos-dmg
+          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.dmg
+
+  Windows:
+    runs-on: [windows-latest]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+
+      - uses: pCYSl5EDgo/cat@master
+        id: version
+        with:
+          path: VERSION
+
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '14.0.0'
+          java-package: jdk
+          architecture: x64
+
+      - name: Create .exe
+        run: ./gradlew jpackage --stacktrace
+        env:
+          VERSION: ${{ steps.version.outputs.text }}
+
+      - name: List build images
+        run: dir build\image
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v1
+        with:
+          name: ra-desktop-v${{ steps.version.outputs.text }}-windows-exe
+          path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.exe

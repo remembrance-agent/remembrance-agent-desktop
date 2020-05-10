@@ -20,4 +20,9 @@ public class HTML {
 
         return StringUtil.releaseBuilder(sb);
     }
+
+    public static String title(String html) {
+        Document document = Jsoup.parse(html);
+        return document.title();
+    }
 }

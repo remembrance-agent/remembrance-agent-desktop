@@ -14,30 +14,12 @@ This package uses the [`remembrance-agent` engine package](https://github.com/re
 * Speech as input using a Google Cloud Speech API
 * Automatic logging of all keystrokes while the RA GUI is running, both for use in the RA and for logging to the `RA` data directory
 
-![Logo](./docs/img/logo.png)
+## Installation instructions
 
-## Commands
+This project offers macOS and Windows distributions in the form of `dmg` and `exe` files, respectively.
 
-### Building
+Please see the Actions tab above, click the latest build with a green check mark, and download the artifact for your operating system.
 
-```bash
-VERSION="2.0.0" ./gradlew build
-```
-
-### Installing as Launch Daemon (macOS)
-
-```bash
-sudo VERSION="2.0.0" bash ./bin/install
-```
-
-Now you can run the following from anywhere:
-```bash
-VERSION="2.0.0" ra --home $HOME
-```
-
-### Running (cross platform)
-
-Adapt the file `./bin/ra` for your platform.
 
 ## Screenshots
 
@@ -57,7 +39,7 @@ Adapt the file `./bin/ra` for your platform.
 
 ### Versioning
 
-Increment the version numbers in this README.
+Increment the version number in the `VERSION` file and in the `RemembranceAgentClient`.
 
 ---
 

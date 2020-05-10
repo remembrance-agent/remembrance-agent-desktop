@@ -1,5 +1,7 @@
 package io.p13i.ra.utils;
 
+import io.p13i.ra.input.SpecialCharacters;
+
 import java.util.Date;
 
 /**
@@ -9,11 +11,31 @@ import java.util.Date;
  */
 public class KeyboardLoggerBreakingBuffer {
     private static final long BREAKING_BUFFER_DURATION_SEC = 2;  // seconds
-    private static final char DEFAULT_BREAKER_CHARACTER = '␣';
+    private static final char DEFAULT_BREAKER_CHARACTER = '_';
     private final LimitedCapacityBuffer<TimestampedCharacter> limitedCapacityBuffer;
 
     public KeyboardLoggerBreakingBuffer(int maximumCapacity) {
         this.limitedCapacityBuffer = new LimitedCapacityBuffer<>(maximumCapacity);
+    }
+
+    /**
+     * Adds each character of the given string to the buffer
+     * @param str the string to add
+     */
+    public void addString(String str) {
+        if (str.equals(SpecialCharacters.BACKSPACE)) {
+            limitedCapacityBuffer.removeLast();
+            return;
+        }
+
+        if (str.equals(SpecialCharacters.SPACE)) {
+            addCharacter(' ');
+            return;
+        }
+
+        for (int i = 0; i < str.length(); i++) {
+            addCharacter(str.charAt(i));
+        }
     }
 
     /**
@@ -23,10 +45,10 @@ public class KeyboardLoggerBreakingBuffer {
      */
     public void addCharacter(char c) {
 
-        if (c == '⌫') {
-            limitedCapacityBuffer.removeLast();
-            return;
-        }
+        // if (c == '') {
+        //     limitedCapacityBuffer.removeLast();
+        //     return;
+        // }
 
         if (!isCharacterAllowedIntoBuffer(c)) {
             return;

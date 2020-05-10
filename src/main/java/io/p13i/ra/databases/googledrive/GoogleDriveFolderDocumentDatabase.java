@@ -46,6 +46,7 @@ public class GoogleDriveFolderDocumentDatabase extends AbstractDocumentDatabase<
 
     @Override
     public void loadDocuments() {
+        LOGGER.info("loadDocuments()");
         try {
             loadDocumentsRecursive(getClient(), this.googleDriveDocuments, this.rootFolderID);
         } catch (IOException e) {

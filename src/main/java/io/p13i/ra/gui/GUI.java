@@ -2,16 +2,12 @@ package io.p13i.ra.gui;
 
 import io.p13i.ra.RemembranceAgentClient;
 import io.p13i.ra.databases.html.HTMLDocument;
+import io.p13i.ra.engine.RemembranceAgentEngine;
 import io.p13i.ra.input.AbstractInputMechanism;
 import io.p13i.ra.input.KeyboardInputMechanism;
 import io.p13i.ra.input.GoogleCloudSpeechInputMechanism;
 import io.p13i.ra.models.ScoredDocument;
-import io.p13i.ra.utils.DateUtils;
-import io.p13i.ra.utils.GoogleChrome;
-import io.p13i.ra.utils.HTML;
-import io.p13i.ra.utils.HTTP;
-import io.p13i.ra.utils.IntegerUtils;
-import io.p13i.ra.utils.URIUtils;
+import io.p13i.ra.utils.*;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -27,6 +23,7 @@ import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -34,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import static io.p13i.ra.RemembranceAgentClient.APPLICATION_NAME;
 import static io.p13i.ra.gui.User.Preferences.Preference.*;
@@ -41,6 +39,8 @@ import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
 
 public class GUI {
+    private static final Logger LOGGER = LoggerUtils.getLogger(GUI.class);
+
     private static final int WIDTH = 600;
     private static final int HEIGHT = 220;
     private static final int LINE_HEIGHT = 30;
@@ -76,6 +76,11 @@ public class GUI {
             add(Box.createHorizontalGlue());
             setJMenuBar(new JMenuBar() {{
                 add(new JMenu("RA Settings") {{
+                    add(new JMenuItem("Pause input and search") {{
+                        addActionListener(e -> {
+                            JOptionPane.showMessageDialog(mJFrame, "Under construction...");
+                        });
+                    }});
                     add(new JMenuItem("Reinitialize remembrance agent") {{
                         addActionListener(e -> {
                             RemembranceAgentClient.getInstance().initializeRAEngine(true);
@@ -96,7 +101,30 @@ public class GUI {
                                     // Update GUI
                                     JOptionPane.showMessageDialog(mJFrame, "Reloading with new cache! GUI will be disabled");
                                     mJFrame.setEnabled(false);
-                                    setSuggestionsPanelTitle("Loading caches...");
+                                    setSuggestionsPanelTitle("Loading caches");
+
+                                    Timer updateTimer = new Timer(1000, new ActionListener() {
+                                        private static final int MAX_PERIOD_COUNT = 3;
+                                        private int mPeriodCount = 0;
+
+                                        private String getPanelTitle() {
+                                            StringBuilder stringBuilder = new StringBuilder();
+                                            stringBuilder.append("Loading caches");
+                                            for (int i = 1; i <= mPeriodCount; i++) {
+                                                stringBuilder.append(".");
+                                            }
+                                            return stringBuilder.toString();
+                                        }
+
+                                        @Override
+                                        public void actionPerformed(ActionEvent e) {
+                                            mPeriodCount = (mPeriodCount + 1) % (MAX_PERIOD_COUNT + 1);
+                                            setSuggestionsPanelTitle(getPanelTitle());
+                                        }
+                                    }) {{
+                                        setRepeats(true);
+                                        start();
+                                    }};
 
                                     // Re-init
                                     try {
@@ -112,7 +140,9 @@ public class GUI {
                                         // Task failed -> false
                                         reloadSuccesful = false;
                                     } finally {
+                                        updateTimer.stop();
                                         JOptionPane.showMessageDialog(mJFrame, reloadSuccesful ? "Reinitialized with new cache!" : "Reload failed :(");
+                                        setSuggestionsPanelTitle(RemembranceAgentClient.getInstance().getCurrentInputMechanism().getInputMechanismName());
                                         mJFrame.setEnabled(true);
                                     }
 
@@ -131,8 +161,14 @@ public class GUI {
                         addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                JFileChooser fileChooser = new JFileChooser();
-                                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                String currentDirectory = User.Preferences.getString(LocalDiskDocumentsFolderPath);
+                                File currentDirectoryFile = new File(currentDirectory);
+
+                                JFileChooser fileChooser = new JFileChooser() {{
+                                    setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                                    setCurrentDirectory(currentDirectoryFile);
+                                }};
+
                                 // disable the "All files" option.
                                 fileChooser.setAcceptAllFileFilterUsed(false);
                                 if (fileChooser.showOpenDialog(mJFrame) == JFileChooser.APPROVE_OPTION) {
@@ -260,21 +296,31 @@ public class GUI {
                             @Override
                             public void actionPerformed(ActionEvent e) {
 
-                                // All code inside SwingWorker runs on a seperate thread
+                                // All code inside SwingWorker runs on a separate thread
                                 SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
                                     @Override
                                     public Boolean doInBackground() {
 
-                                        String url = GoogleChrome.getURLofActiveTab();
-                                        String title = GoogleChrome.getTitleOfActiveTab();
+                                        String url;
+
+                                        try {
+                                            url = GoogleChrome.getURLofActiveTab();
+                                        } catch (UnsupportedOperationException ex) {
+                                            ex.printStackTrace();
+                                            LOGGER.warning(ex.toString());
+                                            JOptionPane.showMessageDialog(mJFrame, ex.toString(), ex.toString(), JOptionPane.ERROR_MESSAGE);
+                                            url = "Paste URL here";
+                                        }
 
                                         url = JOptionPane.showInputDialog(mJFrame, "Index web page with Remembrance Agent:", url);
-                                        if (url == null || url.length() == 0) {
+                                        if (url == null || url.length() == 0 || !url.startsWith("http")) {
                                             return false;
                                         }
 
                                         String html = HTTP.get(url);
+
                                         String text = HTML.text(html);
+                                        String title = HTML.title(html);
 
                                         HTMLDocument htmlDocument = new HTMLDocument(text, DateUtils.now(), url, title) {{
                                             index();

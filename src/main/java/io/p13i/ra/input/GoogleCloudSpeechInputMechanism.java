@@ -173,11 +173,7 @@ public class GoogleCloudSpeechInputMechanism extends AbstractInputMechanism impl
                 List<SpeechRecognitionAlternative> alternativesList = streamingRecognitionResult.getAlternativesList();
                 for (SpeechRecognitionAlternative speechRecognitionAlternative : alternativesList) {
                     String transcript = speechRecognitionAlternative.getTranscript();
-                    for (int i = 0; i < transcript.length(); i++) {
-                        Character character = transcript.charAt(i);
-                        Character toUpperCase = CharacterUtils.toUpperCase(character);
-                        inputMechanismEventsListenerCallback.onInput(this, toUpperCase);
-                    }
+                    inputMechanismEventsListenerCallback.onInput(this, transcript.toUpperCase());
                 }
             }
         }

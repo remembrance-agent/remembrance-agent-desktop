@@ -39,23 +39,23 @@ public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocumen
     /**
      * The emails loaded into the database
      */
-    private List<GmailDocument> gmailDocuments;
+    private List<GmailDocument> mGmailDocuments;
 
     /**
      * The maximum number of results to pull from the Gmail API
      */
-    private long gmailResultsLimit;
+    private long mGmailResultsLimit;
 
     /**
      * @param gmailResultsLimit the number of emails to limit the search to
      */
     public GmailDocumentDatabase(long gmailResultsLimit) {
-        this.gmailResultsLimit = gmailResultsLimit;
+        this.mGmailResultsLimit = gmailResultsLimit;
     }
 
     @Override
     public void loadDocuments() {
-        this.gmailDocuments = new ArrayList<>();
+        this.mGmailDocuments = new ArrayList<>();
 
         Gmail service = getGmailService();
 
@@ -66,10 +66,13 @@ public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocumen
                     .messages()
                     .list("me")
                     .setQ("label:ra")
-                    .setMaxResults(this.gmailResultsLimit)
+                    .setMaxResults(this.mGmailResultsLimit)
                     .execute()
                     .getMessages();
 
+            if (response == null) {
+                return;
+            }
 
             for (Message message : response) {
 
@@ -87,8 +90,12 @@ public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocumen
                     continue;
                 }
 
-                GmailDocument gmailDocument = new GmailDocument(fullMessage.getId(), getMessageContent(fullMessage), getMessageSubject(fullMessage), getMessageSender(fullMessage), getReceivedDate(fullMessage));
-                this.gmailDocuments.add(gmailDocument);
+                GmailDocument gmailDocument = new GmailDocument(fullMessage.getId(),
+                        getMessageContent(fullMessage),
+                        getMessageSubject(fullMessage),
+                        getMessageSender(fullMessage),
+                        getReceivedDate(fullMessage));
+                this.mGmailDocuments.add(gmailDocument);
 
             }
         } catch (IOException e) {
@@ -112,7 +119,7 @@ public class GmailDocumentDatabase extends AbstractDocumentDatabase<GmailDocumen
 
     @Override
     public List<GmailDocument> getAllDocuments() {
-        return this.gmailDocuments;
+        return this.mGmailDocuments;
     }
 
     /**
