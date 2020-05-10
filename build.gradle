@@ -23,10 +23,6 @@ application {
 }
 
 jar {
-    from('.') {
-        include 'VERSION'
-    }
-
     manifest {
         attributes(
                 'Main-Class': mainClass
@@ -79,11 +75,16 @@ dependencies {
     compile 'org.jsoup:jsoup:1.12.1'
 }
 
+task copyVersion(type: Copy) {
+    from 'VERSION'
+    into 'build/resources/main'
+}
+
 /**
  * Builds the project and creates application images.
  * Depends on the host operating system
  */
-task jpackage(type: Exec, dependsOn: [build]) {
+task jpackage(type: Exec, dependsOn: [copyVersion, build]) {
 
     def options = [
         'jpackage',
