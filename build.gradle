@@ -77,7 +77,7 @@ dependencies {
 
 task copyVersion(type: Copy) {
     from 'VERSION'
-    into 'build/resources/main'
+    into 'build/resources/main/static'
 }
 
 /**

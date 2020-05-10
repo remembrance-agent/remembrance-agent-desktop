@@ -49,7 +49,7 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
 
     private static final Logger LOGGER = LoggerUtils.getLogger(RemembranceAgentClient.class);
 
-    public static final String VERSION = FileIO.read(System.getProperty("user.dir") + File.separator + "VERSION");
+    public static final String VERSION = getVersionString();
 
     public static final String APPLICATION_NAME = "Remembrance Agent (v" + VERSION + ")";
 
@@ -352,5 +352,9 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
      */
     public AbstractInputMechanism getCurrentInputMechanism() {
         return mCurrentInputMechanism;
+    }
+
+    private static String getVersionString() {
+        return FileIO.read(System.getProperty("user.dir") + File.separator + "VERSION");
     }
 }
