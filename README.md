@@ -5,7 +5,7 @@ Java package for Remembrance Agents! Based on Rhodes
 **STRICTLY NON-COMMERCIAL USE**  
 **STRICTLY NON-COMMERCIAL USE**  
 
-[![Build Status](https://travis-ci.org/remembrance-agent/remembrance-agent-desktop.svg?branch=master)](https://travis-ci.org/remembrance-agent/remembrance-agent-desktop) [![Build Status](https://github.com/remembrance-agent/remembrance-agent-desktop/workflows/Java%20CI/badge.svg)](https://github.com/remembrance-agent/remembrance-agent-desktop/actions?workflow=Java+CI)
+[![Build Status](https://github.com/remembrance-agent/remembrance-agent-desktop/workflows/Java%20CI/badge.svg)](https://github.com/remembrance-agent/remembrance-agent-desktop/actions?workflow=Java+CI)
 
 This package uses the [`remembrance-agent` engine package](https://github.com/remembrance-agent/remembrance-agent) to implement at desktop GUI-based RA. Special features include:
 * Support for indexing emails from Gmail
