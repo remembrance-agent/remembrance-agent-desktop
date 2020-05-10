@@ -23,6 +23,10 @@ application {
 }
 
 jar {
+    from('.') {
+        include 'VERSION'
+    }
+
     manifest {
         attributes(
                 'Main-Class': mainClass
