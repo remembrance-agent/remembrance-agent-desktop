@@ -1,6 +1,6 @@
 package io.p13i.ra.utils;
 
-import io.p13i.ra.input.SpecialCharacters;
+import org.jnativehook.keyboard.NativeKeyEvent;
 
 import java.util.Date;
 
@@ -21,21 +21,31 @@ public class KeyboardLoggerBreakingBuffer {
     /**
      * Adds each character of the given string to the buffer
      * @param str the string to add
+     * @param isActionKey
      */
-    public void addString(String str) {
-        if (str.equals(SpecialCharacters.BACKSPACE)) {
+    public void addString(String str, boolean isActionKey) {
+        if (str.equals(NativeKeyEvent.getKeyText(NativeKeyEvent.VC_BACKSPACE))) {
             limitedCapacityBuffer.removeLast();
             return;
         }
 
-        if (str.equals(SpecialCharacters.SPACE)) {
+        if (str.equals(NativeKeyEvent.getKeyText(NativeKeyEvent.VC_SPACE))) {
             addCharacter(' ');
             return;
         }
 
-        for (int i = 0; i < str.length(); i++) {
-            addCharacter(str.charAt(i));
+        // We only want to handle backspace, space, and non-action keys
+        if (isActionKey) {
+            return;
         }
+
+        // Only handle alpha-numeric characters (longer strings are usually action keys (i.e. shift, control, etc.)
+        if (str.length() != 1) {
+            return;
+        }
+
+        // Let's add it in!
+        addCharacter(str.charAt(0));
     }
 
     /**

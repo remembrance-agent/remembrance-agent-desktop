@@ -12,9 +12,7 @@ import com.google.cloud.speech.v1.StreamingRecognitionResult;
 import com.google.cloud.speech.v1.StreamingRecognizeRequest;
 import com.google.cloud.speech.v1.StreamingRecognizeResponse;
 import com.google.protobuf.ByteString;
-import io.p13i.ra.utils.CharacterUtils;
 import io.p13i.ra.utils.LoggerUtils;
-import io.p13i.ra.utils.StringUtils;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -25,10 +23,7 @@ import javax.sound.sampled.TargetDataLine;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 import java.util.logging.Logger;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 
 /**
@@ -173,7 +168,7 @@ public class GoogleCloudSpeechInputMechanism extends AbstractInputMechanism impl
                 List<SpeechRecognitionAlternative> alternativesList = streamingRecognitionResult.getAlternativesList();
                 for (SpeechRecognitionAlternative speechRecognitionAlternative : alternativesList) {
                     String transcript = speechRecognitionAlternative.getTranscript();
-                    inputMechanismEventsListenerCallback.onInput(this, transcript.toUpperCase());
+                    inputMechanismEventsListenerCallback.onInput(this, transcript.toUpperCase(), /* isActionKey: */ false);
                 }
             }
         }

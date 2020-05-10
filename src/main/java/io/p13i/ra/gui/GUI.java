@@ -9,21 +9,7 @@ import io.p13i.ra.input.GoogleCloudSpeechInputMechanism;
 import io.p13i.ra.models.ScoredDocument;
 import io.p13i.ra.utils.*;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JSeparator;
-import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
-import javax.swing.Timer;
+import javax.swing.*;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -42,7 +28,7 @@ public class GUI {
     private static final Logger LOGGER = LoggerUtils.getLogger(GUI.class);
 
     private static final int WIDTH = 600;
-    private static final int HEIGHT = 220;
+    private static final int HEIGHT = 240;
     private static final int LINE_HEIGHT = 30;
     private static final int PADDING_LEFT = 10;
     private static final int PADDING_TOP = 10;
@@ -194,31 +180,6 @@ public class GUI {
                             }
                         });
                     }});
-                    add(new JSeparator());
-                    add(new JMenuItem("Select ra-client.log directory...") {{
-                        addActionListener(new ActionListener() {
-                            @Override
-                            public void actionPerformed(ActionEvent e) {
-                                JFileChooser fileChooser = new JFileChooser();
-                                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                                // disable the "All files" option.
-                                fileChooser.setAcceptAllFileFilterUsed(false);
-                                if (fileChooser.showOpenDialog(mJFrame) == JFileChooser.APPROVE_OPTION) {
-                                    User.Preferences.set(RAClientLogFile, fileChooser.getSelectedFile().toPath().toString() + File.separator + "ra-client.log");
-                                    JOptionPane.showMessageDialog(mJFrame, "Selected ra-client.log file: " + User.Preferences.getString(RAClientLogFile));
-                                }
-                            }
-                        });
-                    }});
-                    add(new JMenuItem("Open ra-client.log log...") {{
-                        addActionListener(e -> {
-                            try {
-                                Desktop.getDesktop().open(new File(User.Preferences.getString(RAClientLogFile)));
-                            } catch (IOException ex) {
-                                ex.printStackTrace();
-                            }
-                        });
-                    }});
                 }});
                 add(new JMenu("Keylogger") {{
                     add(new JMenuItem("Clear buffer") {{
@@ -346,12 +307,17 @@ public class GUI {
                     }});
                 }});
                 add(new JMenu("About") {{
-                    add(new JMenuItem("Show...") {{
+                    add(new JMenuItem("Show about...") {{
                         addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                JOptionPane.showMessageDialog(mJFrame, "© Pramod Kotipalli, http://remem.p13i.io/");
-
+                                JOptionPane.showMessageDialog(mJFrame,
+                                    /* message: */ "Copyright Pramod Kotipalli, http://ra.p13i.io/\n"
+                                        + "Source code: http://github.ra.p13i.io/\n"
+                                        + "License: MIT\n"
+                                        + "Contact: pramod.kotipalli@gmail.com",
+                                    /* title: */"About",
+                                    /* type: */JOptionPane.INFORMATION_MESSAGE);
                             }
                         });
                     }});
