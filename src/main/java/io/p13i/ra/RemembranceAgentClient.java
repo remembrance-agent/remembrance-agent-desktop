@@ -1,6 +1,5 @@
 package io.p13i.ra;
 
-import java.io.File;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,7 +24,6 @@ import io.p13i.ra.utils.BufferingLogFileWriter;
 import io.p13i.ra.utils.DateUtils;
 import io.p13i.ra.utils.KeyboardLoggerBreakingBuffer;
 import io.p13i.ra.utils.LoggerUtils;
-import io.p13i.ra.utils.FileIO;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -49,7 +47,7 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
 
     private static final Logger LOGGER = LoggerUtils.getLogger(RemembranceAgentClient.class);
 
-    public static final String VERSION = getVersionString();
+    public static final String VERSION = "2.0.0";
 
     public static final String APPLICATION_NAME = "Remembrance Agent (v" + VERSION + ")";
 
@@ -352,9 +350,5 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
      */
     public AbstractInputMechanism getCurrentInputMechanism() {
         return mCurrentInputMechanism;
-    }
-
-    private static String getVersionString() {
-        return FileIO.read(System.getProperty("user.dir") + File.separator + "static" + File.separator + "VERSION");
     }
 }

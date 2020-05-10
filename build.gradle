@@ -75,16 +75,11 @@ dependencies {
     compile 'org.jsoup:jsoup:1.12.1'
 }
 
-task copyVersion(type: Copy) {
-    from 'VERSION'
-    into 'build/resources/main/static'
-}
-
 /**
  * Builds the project and creates application images.
  * Depends on the host operating system
  */
-task jpackage(type: Exec, dependsOn: [copyVersion, build]) {
+task jpackage(type: Exec, dependsOn: [build]) {
 
     def options = [
         'jpackage',
