@@ -7,9 +7,9 @@ plugins {
 }
 
 // Get the version string from the environment
-String envVersion = new File('VERSION').text
+String envVersion = project.file('VERSION').text
 
-if (envVersion == null || envVersion.length() < "x.y.z".length()) {
+if (envVersion == null || envVersion == "null" || envVersion.length() < "x.y.z".length()) {
     throw new RuntimeException("Version not found. Found " + envVersion);
 }
 
@@ -25,7 +25,9 @@ application {
 jar {
     manifest {
         attributes(
-                'Main-Class': mainClass
+                'Main-Class': mainClass,
+                'Implementation-Title': 'Remembrance Agent Desktop',
+                'Implementation-Version': envVersion,
         )
     }
 }
@@ -115,3 +117,25 @@ task jpackage(type: Exec, dependsOn: [build]) {
 
     environment << [JPACKAGE_DEBUG: true]
 }
+
+// Write version file into resources
+// Source: https://stackoverflow.com/a/50119235
+
+def generatedVersionDir = "${buildDir}/generated-version"
+
+sourceSets {
+    main {
+        output.dir(generatedVersionDir, builtBy: 'generateVersionProperties')
+    }
+}
+
+task generateVersionProperties {
+    doLast {
+        def propertiesFile = file "$generatedVersionDir/version.properties"
+        propertiesFile.parentFile.mkdirs()
+        def properties = new Properties()
+        properties.setProperty("version", rootProject.version.toString())
+        propertiesFile.withWriter { properties.store(it, null) }
+    }
+}
+processResources.dependsOn generateVersionProperties

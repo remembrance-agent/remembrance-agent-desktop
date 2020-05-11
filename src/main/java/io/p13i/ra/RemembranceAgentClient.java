@@ -20,10 +20,7 @@ import io.p13i.ra.models.AbstractDocument;
 import io.p13i.ra.models.Context;
 import io.p13i.ra.models.Query;
 import io.p13i.ra.models.ScoredDocument;
-import io.p13i.ra.utils.BufferingLogFileWriter;
-import io.p13i.ra.utils.DateUtils;
-import io.p13i.ra.utils.KeyboardLoggerBreakingBuffer;
-import io.p13i.ra.utils.LoggerUtils;
+import io.p13i.ra.utils.*;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.HelpFormatter;
@@ -47,7 +44,7 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
 
     private static final Logger LOGGER = LoggerUtils.getLogger(RemembranceAgentClient.class);
 
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = Version.getVersion();
 
     public static final String APPLICATION_NAME = "Remembrance Agent (v" + VERSION + ")";
 
