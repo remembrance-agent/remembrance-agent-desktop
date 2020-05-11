@@ -64,7 +64,8 @@ public class User {
             RAClientLogFile("RA_CLIENT_LOG_FILE_PATH_PREFS_NODE_NAME", Home.Documents.RA.getDirectory() + File.separator + "ra.log"),
             LocalDiskDocumentsFolderPath("LOCAL_DISK_DOCUMENTS_FOLDER_PATH_PREFS_NODE_NAME", Home.Documents.RA.LocalDocuments.getDirectory()),
             GoogleDriveFolderIDs("GOOGLE_DRIVE_FOLDER_IDS_PREFS_NODE_NAME", NOT_SET),
-            GmailMaxEmailsCount("GMAIL_MAX_EMAILS_COUNT_NODE_NAME", "10");
+            GmailMaxEmailsCount("GMAIL_MAX_EMAILS_COUNT_NODE_NAME", "10"),
+            UserConsentsToKeylogger("USER_CONSENTS_TO_KEYLOGGER", Boolean.FALSE.toString());
 
             /**
              * The name of the node used in the backing store
@@ -117,6 +118,24 @@ public class User {
          */
         public static void set(Preference preference, String value) {
             userNodeForPackage(RemembranceAgentClient.class).put(preference.nodeName, value);
+        }
+
+        /**
+         * Sets a boolean preference
+         * @param preference the key
+         * @param value the value
+         */
+        public static void set(Preference preference, Boolean value) {
+            set(preference, value.toString());
+        }
+
+        /**
+         * Gets a boolean preference
+         * @param preference the key
+         * @return boolean value
+         */
+        public static Boolean getBoolean(Preference preference) {
+            return Boolean.parseBoolean(getString(preference));
         }
     }
 }

@@ -3,6 +3,7 @@ package io.p13i.ra.gui;
 import io.p13i.ra.RemembranceAgentClient;
 import io.p13i.ra.databases.html.HTMLDocument;
 import io.p13i.ra.engine.RemembranceAgentEngine;
+import io.p13i.ra.gui.User.Preferences.Preference;
 import io.p13i.ra.input.AbstractInputMechanism;
 import io.p13i.ra.input.KeyboardInputMechanism;
 import io.p13i.ra.input.GoogleCloudSpeechInputMechanism;
@@ -55,8 +56,13 @@ public class GUI {
     private final JFrame mJFrame = new JFrame(APPLICATION_NAME) {{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(GUI.WIDTH, GUI.HEIGHT);
+
+        // We don't support resizing the GUI as of now
         setResizable(false);
+
         setAlwaysOnTop(true);
+
+        // Create the GUI elements
         add(new JPanel() {{
             setLayout(null);
             add(Box.createHorizontalGlue());
@@ -344,6 +350,21 @@ public class GUI {
                 setFont(GUI.FONT);
             }});
         }});
+
+        // Display the keylogger consent message if needed
+        if (!User.Preferences.getBoolean(Preference.UserConsentsToKeylogger)) {
+            JOptionPane.showMessageDialog(mJFrame,
+                    /* message: */"By clicking Ok below, you consent to having your keystrokes logged by this application.\n"
+                            + "Your data DOES NOT leave your computer.\n"
+                            + "Keystrokes are used to provide you with contextually-relevant suggestions, a core features of this remembrance agent client.\n"
+                            + "This message will not be displayed again.",
+                    /* title: */ "Keylogger consent",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            // Store the consent
+            User.Preferences.set(UserConsentsToKeylogger, Boolean.TRUE.toString());
+        }
     }};
 
     public void removeScoredDocuments() {
