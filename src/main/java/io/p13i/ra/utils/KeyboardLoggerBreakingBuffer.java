@@ -21,7 +21,7 @@ public class KeyboardLoggerBreakingBuffer {
     /**
      * Adds each character of the given string to the buffer
      * @param str the string to add
-     * @param isActionKey
+     * @param isActionKey whether the input string is an action key (e.g. shift, control, etc.)
      */
     public void addString(String str, boolean isActionKey) {
         if (str.equals(NativeKeyEvent.getKeyText(NativeKeyEvent.VC_BACKSPACE))) {
@@ -54,11 +54,6 @@ public class KeyboardLoggerBreakingBuffer {
      * @param c the character to add
      */
     public void addCharacter(char c) {
-
-        // if (c == '') {
-        //     limitedCapacityBuffer.removeLast();
-        //     return;
-        // }
 
         if (!isCharacterAllowedIntoBuffer(c)) {
             return;
