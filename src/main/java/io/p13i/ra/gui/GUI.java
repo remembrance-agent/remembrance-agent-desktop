@@ -171,10 +171,13 @@ public class GUI {
                     }});
                     add(new JMenuItem("Set Google Drive folder IDs...") {{
                         addActionListener(e -> {
-                            String inputId = JOptionPane.showInputDialog("Enter a Google Drive Folder IDs (leave blank to cancel, separate with commas):", User.Preferences.getString(GoogleDriveFolderIDs));
-                            if (inputId != null && inputId.length() > 0) {
-                                User.Preferences.set(GoogleDriveFolderIDs, inputId);
+                            String input = JOptionPane.showInputDialog("Enter a Google Drive Folder IDs (leave blank to clear setting. Separate multiple folders IDs with commas):", User.Preferences.getString(GoogleDriveFolderIDs));
+
+                            if (input == null) {
+                                input = "";
                             }
+
+                            User.Preferences.set(GoogleDriveFolderIDs, input);
                         });
                     }});
                     add(new JSeparator());
