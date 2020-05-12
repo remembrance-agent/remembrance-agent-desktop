@@ -220,14 +220,17 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
             // Load files from Google Drive
             String googleDriveFolderIDs = User.Preferences.getString(GoogleDriveFolderIDs);
 
-            String[] ids = googleDriveFolderIDs.split(",");
-            for (String s : ids) {
-                String id = s.trim();
-                LOGGER.info("Loading files from Google Drive folder with: " + id);
 
-                mLocalDiskCacheDatabase.addDocumentsToMemory(new GoogleDriveFolderDocumentDatabase(id) {{
-                    loadDocuments();
-                }});
+            if (googleDriveFolderIDs != null && googleDriveFolderIDs.length() > 0) {
+                String[] ids = googleDriveFolderIDs.split(",");
+                for (String s : ids) {
+                    String id = s.trim();
+                    LOGGER.info("Loading files from Google Drive folder with: " + id);
+
+                    mLocalDiskCacheDatabase.addDocumentsToMemory(new GoogleDriveFolderDocumentDatabase(id) {{
+                        loadDocuments();
+                    }});
+                }
             }
 
             // Load files from Gmail
