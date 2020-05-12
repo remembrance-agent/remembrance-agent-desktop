@@ -231,9 +231,12 @@ public class RemembranceAgentClient implements Runnable, AbstractInputMechanism.
             }
 
             // Load files from Gmail
-            mLocalDiskCacheDatabase.addDocumentsToMemory(new GmailDocumentDatabase(User.Preferences.getInt(GmailMaxEmailsCount)) {{
-                loadDocuments();
-            }});
+            int gmailMaxEmailCount = User.Preferences.getInt(GmailMaxEmailsCount);
+            if (gmailMaxEmailCount > 0) {
+                mLocalDiskCacheDatabase.addDocumentsToMemory(new GmailDocumentDatabase(gmailMaxEmailCount) {{
+                    loadDocuments();
+                }});
+            }
 
             LOGGER.info("Adding documents to disk cache");
 
