@@ -134,7 +134,7 @@ public class GUI {
                                     } finally {
                                         updateTimer.stop();
                                         JOptionPane.showMessageDialog(mJFrame, reloadSuccesful ? "Reinitialized with new cache!" : "Reload failed :(");
-                                        setSuggestionsPanelTitle(RemembranceAgentClient.getInstance().getCurrentInputMechanism().getInputMechanismName());
+                                        mKeystrokeBufferLabel.setBorderTitle(RemembranceAgentClient.getInstance().getCurrentInputMechanism().getInputMechanismName(), GUI.BORDER_PADDING);
                                         mJFrame.setEnabled(true);
                                     }
 
