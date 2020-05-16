@@ -1,11 +1,29 @@
-# remembrance-agent-desktop
-Desktop GUI for Remembrance Agents. Based on research by Bradley Rhodes and MIT Media Lab.
+# Remembrance Agent Desktop GUI
+
+\> Desktop graphical user interface (GUI) for Remembrance Agents.  
+\> Based on research by Bradley Rhodes and MIT Media Lab.  
+\> Written in pure Java.  
+\> Available on Windows, macOS, and Linux.
 
 [![Build Status](https://github.com/remembrance-agent/remembrance-agent-desktop/workflows/Java%20CI/badge.svg)](https://github.com/remembrance-agent/remembrance-agent-desktop/actions?workflow=Java+CI)
 
-This package uses the [`remembrance-agent` engine package](https://github.com/remembrance-agent/remembrance-agent) to implement a desktop-based remembrance agent client. A remembrance agent (RA) is a memory augmentation tool that matches documents from your digital fingerprint to your current context. For example, when typing an email to a colleague about "artificial intelligence," a remembrance agent can pull up lecture notes from years ago on the topic.
+## Background
 
-Another useful example is in the context of industrial tasks. Think of a factory working learning a new role on an assembly line. Your company provides you with a lot of documentation as to how to work this role. Your colleagues also help get you up to speed. However, this is a lot of information to keep in mind and pull up at the right moment, say in the middle of a particular task. A remembrance agent can help the worker remember contextually-relevant advice thereby augmenting his memory.
+ From [[Rhodes 1996]](./docs/papers/rhodes1996.pdf)'s Abstract:
+
+> The Remembrance Agent (RA) is a program which augments human memory by displaying a list of documents which might be relevant to the user’s current context. Unlike most information retrieval systems, the RA runs continuously without user intervention. Its unobtrusive interface allows a user to pursue or ignore the RA’s suggestions as desired.
+
+RAs were originally implemented as an extension for the Emacs text editor by [[Rhodes 1996]](./docs/papers/rhodes1996.pdf). [[Rhodes 1997]](./docs/papers/rhodes1997.pdf) took this one step further by integrating the RA with head-worn displays. However, as of 2020, the use of Emacs or head-worn displays is not widespread. (Only 4.5% of developers use Emacs according to a [2019 survey of Stack Overflow users](https://insights.stackoverflow.com/survey/2019#technology-_-most-popular-development-environments).)
+
+This `remembrance-agent-desktop` project recognizes that 1) RAs are powerful tools and 2) to enable widespread use of RAs, they must be available in a form accessible to a wide range of users outside of just tech-savvy folks. A desktop GUI fills this gap.
+
+This package uses the [`remembrance-agent` Java package](https://github.com/remembrance-agent/remembrance-agent) to provide a desktop-based interface to a remembrance agent. A remembrance agent (RA) is a memory augmentation tool that matches documents from your digital fingerprint to your current context.
+
+## Example use cases
+
+For example, when typing an email to a colleague about "artificial intelligence," a remembrance agent can pull up lecture notes from years ago on the topic.
+
+Another useful example is in the context of industrial tasks. Think of a factory worker learning a new role on an assembly line. Your company provides you with a lot of documentation as to how to work this role. Your colleagues also help get you up to speed. However, this is a lot of information to keep in mind and pull up at the right moment, say in the middle of a particular task. A remembrance agent can help the worker remember contextually-relevant advice thereby augmenting his memory.
 
 Beyond a straightforward keyword match based on the content of your documents, other contextual factors of documents can be considered as well including:
 - the date a document is written,
@@ -52,7 +70,7 @@ Please follow these steps:
         6. You should be good to go!
 5. Read more on the usage of this project below.
 
-## Usage
+## GUI usage
 
 This implementation uses your keystrokes as input to the RA's suggestion engine. This input alongside contextual factors, such as the current date, allows the RA to suggest you contextually relevant suggestions. Doing so, your memory is effectively augmented to include all written documents that are indexed and available to the RA.
 
