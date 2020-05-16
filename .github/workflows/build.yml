@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   macOS:
-    runs-on: [macos]
+    runs-on: [macos-10.15]
 
     steps:
       - uses: actions/checkout@v2
@@ -37,7 +37,7 @@ jobs:
           path: build/image/remembrance-agent-desktop-${{ steps.version.outputs.text }}.dmg
 
   Windows:
-    runs-on: [windows-latest]
+    runs-on: [windows-2019]
 
     steps:
       - uses: actions/checkout@v2
